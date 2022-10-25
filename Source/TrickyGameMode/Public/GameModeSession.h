@@ -36,7 +36,7 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="GameMode")
 	FOnSessionFinishedSignature OnSessionFinished;
-	
+
 	virtual void StartPlay() override;
 
 	virtual bool SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate = FCanUnpause()) override;
@@ -51,7 +51,14 @@ public:
 	
 	void StartSession();
 
+	UFUNCTION(BlueprintCallable, Category="TrickyGameMode")
 	void FinishSession(const bool bIsVictory);
+
+	UFUNCTION(BlueprintCallable, Category="TrickyGameMode")
+	float GetSessionElapsedTime() const;
+	
+	UFUNCTION(BlueprintCallable, Category="TrickyGameMode")
+	float GetSessionRemainingTime() const;
 
 private:
 	// States
@@ -73,7 +80,23 @@ private:
 	UPROPERTY(BlueprintReadOnly, Category="GameMode", meta=(AllowPrivateAccess))
 	FTimerHandle PreparationTimer;
 
+	// Session timer
+	UPROPERTY(EditAnywhere,
+		BlueprintReadOnly,
+		Category="GameMode",
+		meta=(AllowprivateAccess))
+	bool bLimitSessionTime = false;
+
+	UPROPERTY(EditAnywhere,
+		BlueprintReadOnly,
+		Category="GameMode",
+		meta=(AllowPrivateAccess, EditCondition="bLimitSessionTime", ClampMIn="0"))
+	float SessionDuration = 30.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameMode", meta=(AllowPrivateAccess, EditCondition="bLimitSessionTime"))
+	bool bVictoryOnTimeOver = true;
+
+	FTimerHandle SessionTimer;
+
 	bool IsTimerActive(const FTimerHandle& TimerHandle) const;
-
-
 };

@@ -61,12 +61,39 @@ void AGameModeSession::StartSession()
 	}
 
 	SetState(EGameModeState::InProgress);
+
+	if (bLimitSessionTime && !IsTimerActive(SessionTimer))
+	{
+		FTimerDelegate SessionTimerDelegate;
+		SessionTimerDelegate.BindUFunction(this, "FinishSession", bVictoryOnTimeOver);
+		GetWorldTimerManager().SetTimer(SessionTimer, SessionTimerDelegate, SessionDuration, false);
+	}
 }
 
 void AGameModeSession::FinishSession(const bool bIsVictory)
 {
 	SetState(EGameModeState::Finished);
 	OnSessionFinished.Broadcast(bIsVictory);
+}
+
+float AGameModeSession::GetSessionElapsedTime() const
+{
+	if (!GetWorld())
+	{
+		return -1.f;
+	}
+
+	return GetWorldTimerManager().GetTimerElapsed(SessionTimer);
+}
+
+float AGameModeSession::GetSessionRemainingTime() const
+{
+	if (!GetWorld())
+	{
+		return -1.f;
+	}
+
+	return GetWorldTimerManager().GetTimerRemaining(SessionTimer);
 }
 
 void AGameModeSession::SetState(const EGameModeState& NewState)
