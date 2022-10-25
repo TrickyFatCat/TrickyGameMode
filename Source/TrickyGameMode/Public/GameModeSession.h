@@ -43,12 +43,6 @@ public:
 
 	virtual bool ClearPause() override;
 
-	UFUNCTION(BlueprintGetter, Category="TrickyGameMode")
-	float GetPreparationDuration() const;
-
-	UFUNCTION(BlueprintSetter, Category="TrickyGameMode")
-	void SetPreparationDuration(const float Value);
-	
 	void StartSession();
 
 	UFUNCTION(BlueprintCallable, Category="TrickyGameMode")
@@ -71,8 +65,7 @@ private:
 
 	// Preparation timer
 	UPROPERTY(EditAnywhere,
-		BlueprintGetter=GetPreparationDuration,
-		BlueprintSetter=SetPreparationDuration,
+		BlueprintReadOnly,
 		Category="GameMode",
 		meta=(AllowPrivateAccess, ClampMin="0"))
 	float PreparationDuration = 3.f;

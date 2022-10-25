@@ -43,16 +43,6 @@ bool AGameModeSession::ClearPause()
 	return Super::ClearPause();
 }
 
-float AGameModeSession::GetPreparationDuration() const
-{
-	return PreparationDuration;
-}
-
-void AGameModeSession::SetPreparationDuration(const float Value)
-{
-	PreparationDuration = Value < 0.f ? 0.f : Value;
-}
-
 void AGameModeSession::StartSession()
 {
 	if (!GetWorld())
