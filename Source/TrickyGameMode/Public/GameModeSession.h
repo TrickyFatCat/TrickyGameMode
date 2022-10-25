@@ -18,7 +18,7 @@ enum class EGameModeState : uint8
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStateChangedSignature, EGameModeState, NewState);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnSessionFinishedSignature, bool, bIsVictory);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnSessionFinishedSignature, bool, bIsVictory, float, FinalTime);
 
 /**
  * 

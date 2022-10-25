@@ -77,8 +77,15 @@ void AGameModeSession::StartSession()
 void AGameModeSession::FinishSession(const bool bIsVictory)
 {
 	SetState(EGameModeState::Finished);
-	FinalTime = GetSessionElapsedTime();
-	OnSessionFinished.Broadcast(bIsVictory);
+
+	FinalTime = bLimitSessionTime ? GetSessionRemainingTime() : GetSessionElapsedTime();
+	
+	if (bLimitSessionTime && IsTimerActive(SessionTimer))
+	{
+		GetWorldTimerManager().ClearTimer(SessionTimer);
+	}
+	
+	OnSessionFinished.Broadcast(bIsVictory, FinalTime);
 }
 
 float AGameModeSession::GetSessionElapsedTime() const
