@@ -96,6 +96,11 @@ private:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameMode", meta=(AllowPrivateAccess, EditCondition="bLimitSessionTime"))
 	bool bVictoryOnTimeOver = true;
 
+	float TimeOnStart = 0.f;
+
+	UPROPERTY(BlueprintReadOnly, Category="GameMode", meta=(AllowPrivateAccess))
+	float FinalTime = 0.f;
+
 	FTimerHandle SessionTimer;
 
 	bool IsTimerActive(const FTimerHandle& TimerHandle) const;

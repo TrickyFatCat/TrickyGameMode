@@ -68,11 +68,16 @@ void AGameModeSession::StartSession()
 		SessionTimerDelegate.BindUFunction(this, "FinishSession", bVictoryOnTimeOver);
 		GetWorldTimerManager().SetTimer(SessionTimer, SessionTimerDelegate, SessionDuration, false);
 	}
+	else
+	{
+		TimeOnStart = GetWorld()->GetTimeSeconds();
+	}
 }
 
 void AGameModeSession::FinishSession(const bool bIsVictory)
 {
 	SetState(EGameModeState::Finished);
+	FinalTime = GetSessionElapsedTime();
 	OnSessionFinished.Broadcast(bIsVictory);
 }
 
@@ -83,7 +88,9 @@ float AGameModeSession::GetSessionElapsedTime() const
 		return -1.f;
 	}
 
-	return GetWorldTimerManager().GetTimerElapsed(SessionTimer);
+	return bLimitSessionTime
+		       ? GetWorldTimerManager().GetTimerElapsed(SessionTimer)
+		       : GetWorld()->GetTimeSeconds() - TimeOnStart;
 }
 
 float AGameModeSession::GetSessionRemainingTime() const
@@ -93,7 +100,7 @@ float AGameModeSession::GetSessionRemainingTime() const
 		return -1.f;
 	}
 
-	return GetWorldTimerManager().GetTimerRemaining(SessionTimer);
+	return bLimitSessionTime ? GetWorldTimerManager().GetTimerRemaining(SessionTimer) : GetSessionElapsedTime();
 }
 
 void AGameModeSession::SetState(const EGameModeState& NewState)
