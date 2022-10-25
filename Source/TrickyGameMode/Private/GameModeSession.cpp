@@ -17,6 +17,7 @@ void AGameModeSession::StartPlay()
 	}
 	else if (!IsTimerActive(PreparationTimer))
 	{
+		SetState(EGameModeState::Preparation);
 		GetWorldTimerManager().SetTimer(PreparationTimer, this, &AGameModeSession::StartSession, PreparationDuration);
 	}
 }
