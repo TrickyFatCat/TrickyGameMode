@@ -11,8 +11,6 @@ APlayerControllerSession::APlayerControllerSession()
 
 void APlayerControllerSession::BeginPlay()
 {
-	Super::BeginPlay();
-
 	const UWorld* World = GetWorld();
 
 	if (World)
@@ -27,6 +25,8 @@ void APlayerControllerSession::BeginPlay()
 
 	bShowMouseCursor = false;
 	SetTickableWhenPaused(true);
+	
+	Super::BeginPlay();
 }
 
 void APlayerControllerSession::SetupInputComponent()
@@ -70,7 +70,7 @@ void APlayerControllerSession::OnGameModeStateChanged(EGameModeState NewState)
 		break;
 
 	default:
-		ToggleInput(false, true, FInputModeUIOnly());
+		ToggleInput(false, false, FInputModeUIOnly());
 		break;
 	}
 }
