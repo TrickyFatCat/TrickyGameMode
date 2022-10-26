@@ -61,7 +61,7 @@ private:
 
 	EGameModeState PreviousState = EGameModeState::Inactive;
 
-	void SetState(const EGameModeState& NewState);
+	void SetState(EGameModeState NewState);
 
 	// Preparation timer
 	UPROPERTY(EditAnywhere,
