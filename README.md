@@ -10,7 +10,7 @@ The plugin can be used in both C++ and Blueprint projects.
 
 **At the moment, the package is compatible only with Unreal Engine 4.**
 
-1. Download [**package file**](https://github.com/TrickyFatCat/TrickyAnimationComponents/releases/tag/v1.1);
+1. Download [**package file**](https://github.com/TrickyFatCat/TrickyGameMode/releases/tag/v1.0);
 2. Unzip the package to the Plugins folder in engine folder, e.g. `C:\Program Files\Epic Games\UE_4.27\Engine\Plugins`;
 3. Restart the project;
 
@@ -59,9 +59,16 @@ A basic game mode which has different states and timers implemented.
 
 ### PlayerControllerSession
 
+A player controller actor which has pause and GameModeSession states functionality;
+
 #### Variables
 
+1. `bShowCursorOnStart` - toggle if the mouse cursor must be shown when the session started;
+
 #### Functions
+
+1. `OnGameModeStateChanged` - called when the session state was changed.
+    * Override this function if you want to implement your controller functionality when the state was changed;
 
 ## Quick setup
 
