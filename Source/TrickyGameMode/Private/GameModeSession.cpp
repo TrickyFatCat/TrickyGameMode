@@ -12,6 +12,11 @@ void AGameModeSession::StartPlay()
 {
 	Super::StartPlay();
 
+	if (!bManualStart)
+	{
+		return;
+	}
+	
 	if (PreparationDuration <= 0.f)
 	{
 		StartSession();

@@ -49,6 +49,10 @@ public:
 
 	virtual bool ClearPause() override;
 
+	/**
+	 * Starts the session.
+	 */
+	UFUNCTION(BlueprintCallable, Category="TrickyGameMode")
 	void StartSession();
 
 	/**
@@ -81,6 +85,12 @@ private:
 
 	void SetState(EGameModeState NewState);
 
+	/**
+	 * If true the session will start automatically, else StartSession function must be called.
+	 */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameMode", meta=(AllowPrivateAccess))
+	bool bManualStart = false;
+	
 	// Preparation timer
 	/**
 	 * Defines the time of the Preparation state.
@@ -108,7 +118,7 @@ private:
 	bool bLimitSessionTime = false;
 
 	/**
-	 * Session duration if its time limited.
+	 * Session length if its time limited.
 	 */
 	UPROPERTY(EditAnywhere,
 		BlueprintReadOnly,
