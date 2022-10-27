@@ -26,7 +26,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category="Controller")
 	bool bShowCursorOnStart = false;
 	
-	UFUNCTION()
+	UFUNCTION(BlueprintNativeEvent, Category="Controller")
 	void OnGameModeStateChanged(EGameModeState NewState);
 
 	UFUNCTION()

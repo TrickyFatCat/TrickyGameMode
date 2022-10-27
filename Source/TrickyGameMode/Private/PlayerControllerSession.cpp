@@ -25,7 +25,7 @@ void APlayerControllerSession::BeginPlay()
 
 	bShowMouseCursor = false;
 	SetTickableWhenPaused(true);
-	
+
 	Super::BeginPlay();
 }
 
@@ -40,7 +40,7 @@ void APlayerControllerSession::SetupInputComponent()
 	PauseBinding.bExecuteWhenPaused = true;
 }
 
-void APlayerControllerSession::OnGameModeStateChanged(EGameModeState NewState)
+void APlayerControllerSession::OnGameModeStateChanged_Implementation(EGameModeState NewState)
 {
 	auto ToggleInput = [&](const bool bEnableInput, const bool bShowCursor, const FInputModeDataBase& InputMode)
 	{
