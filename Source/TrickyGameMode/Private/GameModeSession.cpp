@@ -3,6 +3,7 @@
 
 #include "GameModeSession.h"
 #include "TimerManager.h"
+#include "Engine/World.h"
 
 AGameModeSession::AGameModeSession()
 {
