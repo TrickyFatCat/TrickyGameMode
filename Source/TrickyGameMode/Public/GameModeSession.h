@@ -32,13 +32,13 @@ public:
 	AGameModeSession();
 
 	/**
-	 * Called when the state is changed.
+	 * Called when the state was changed.
 	 */
 	UPROPERTY(BlueprintAssignable, Category="GameMode")
 	FOnStateChangedSignature OnStateChanged;
 
 	/**
-	 * Called when the session is finished.
+	 * Called when the session was finished.
 	 */
 	UPROPERTY(BlueprintAssignable, Category="GameMode")
 	FOnSessionFinishedSignature OnSessionFinished;

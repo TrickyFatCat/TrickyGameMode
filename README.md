@@ -32,11 +32,30 @@ The plugin has actors:
 
 ### GameModeSession
 
+A basic game mode which has different states and timers implemented.
+
 #### Variables
+
+1. `CurrentState` - current state of the game;
+2. `ManualStart` - if true the session will start automatically, else StartSession function must be called.
+3. `PreparationDuration` - defines the time of the preparation state;
+4. `PreparationTimer` - preparation timer handle;
+5. `LimitSessionTime` - toggle if session time is limited or not;
+6. `SessionDuration` - session length if its time is limited;
+7. `VictoryOnTimeOver` - determines if session finished with victory when time is over;
+8. `FinalTime` - the final time of the session when it finishes;
 
 #### Functions
 
+1. `StartSession` - starts the session;
+2. `FinishSession` - finishes the session;
+3. `GetSessionElapsedTime` - returns session elapsed time;
+4. `GetSessionRemainingTime` - returns session remaining time;
+
 #### Delegates
+
+1. `OnSessionChenged` - called when the state was changed;
+2. `OnSessionFinished` - called when the session was finished;
 
 ### PlayerControllerSession
 
