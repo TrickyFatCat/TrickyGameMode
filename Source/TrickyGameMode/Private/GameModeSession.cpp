@@ -13,7 +13,7 @@ void AGameModeSession::StartPlay()
 {
 	Super::StartPlay();
 
-	if (!bManualStart)
+	if (bManualStart)
 	{
 		return;
 	}
