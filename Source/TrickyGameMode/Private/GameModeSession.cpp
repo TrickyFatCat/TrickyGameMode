@@ -15,17 +15,17 @@ void AGameModeSession::StartPlay()
 
 	if (bManualStart)
 	{
+		OnStateChanged.Broadcast(EGameModeState::Inactive);
 		return;
 	}
-	
+
 	if (PreparationDuration <= 0.f)
 	{
 		StartSession();
 	}
 	else if (!IsTimerActive(PreparationTimer))
 	{
-		SetState(EGameModeState::Preparation);
-		GetWorldTimerManager().SetTimer(PreparationTimer, this, &AGameModeSession::StartSession, PreparationDuration);
+		StartPreparation();
 	}
 }
 

@@ -34,13 +34,13 @@ public:
 	/**
 	 * Called when the state was changed.
 	 */
-	UPROPERTY(BlueprintAssignable, Category="GameMode")
+	UPROPERTY(BlueprintAssignable, Category="TrickyGameMode")
 	FOnStateChangedSignature OnStateChanged;
 
 	/**
 	 * Called when the session was finished.
 	 */
-	UPROPERTY(BlueprintAssignable, Category="GameMode")
+	UPROPERTY(BlueprintAssignable, Category="TrickyGameMode")
 	FOnSessionFinishedSignature OnSessionFinished;
 
 	virtual void StartPlay() override;
@@ -84,7 +84,7 @@ private:
 	/**
 	 * Current state of the game.
 	 */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="GameMode", meta=(AllowPrivateAccess))
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="TrickyGameMode", meta=(AllowPrivateAccess))
 	EGameModeState CurrentState = EGameModeState::Inactive;
 
 	EGameModeState PreviousState = EGameModeState::Inactive;
@@ -94,23 +94,23 @@ private:
 	/**
 	 * If true the session will start automatically, else StartSession function must be called.
 	 */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameMode", meta=(AllowPrivateAccess))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="TrickyGameMode", meta=(AllowPrivateAccess))
 	bool bManualStart = false;
-	
+
 	// Preparation timer
 	/**
 	 * Defines the time of the Preparation state.
 	 */
 	UPROPERTY(EditAnywhere,
 		BlueprintReadOnly,
-		Category="GameMode",
+		Category="TrickyGameMode",
 		meta=(AllowPrivateAccess, ClampMin="0"))
 	float PreparationDuration = 3.f;
 
 	/**
 	 * Preparation timer handle.
 	 */
-	UPROPERTY(BlueprintReadOnly, Category="GameMode", meta=(AllowPrivateAccess))
+	UPROPERTY(BlueprintReadOnly, Category="TrickyGameMode", meta=(AllowPrivateAccess))
 	FTimerHandle PreparationTimer;
 
 	// Session timer
@@ -119,7 +119,7 @@ private:
 	 */
 	UPROPERTY(EditAnywhere,
 		BlueprintReadOnly,
-		Category="GameMode",
+		Category="TrickyGameMode",
 		meta=(AllowprivateAccess))
 	bool bLimitSessionTime = false;
 
@@ -128,14 +128,15 @@ private:
 	 */
 	UPROPERTY(EditAnywhere,
 		BlueprintReadOnly,
-		Category="GameMode",
+		Category="TrickyGameMode",
 		meta=(AllowPrivateAccess, EditCondition="bLimitSessionTime", ClampMIn="0"))
 	float SessionDuration = 30.f;
 
 	/**
 	 * Determines if session finished with victory when time is over.
 	 */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="GameMode", meta=(AllowPrivateAccess, EditCondition="bLimitSessionTime"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="TrickyGameMode",
+		meta=(AllowPrivateAccess, EditCondition="bLimitSessionTime"))
 	bool bVictoryOnTimeOver = true;
 
 	float TimeOnStart = 0.f;
@@ -143,7 +144,7 @@ private:
 	/**
 	 * The final time of the session when it finishes.
 	 */
-	UPROPERTY(BlueprintReadOnly, Category="GameMode", meta=(AllowPrivateAccess))
+	UPROPERTY(BlueprintReadOnly, Category="TrickyGameMode", meta=(AllowPrivateAccess))
 	float FinalTime = 0.f;
 
 	FTimerHandle SessionTimer;
