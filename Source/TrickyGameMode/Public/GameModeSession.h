@@ -62,6 +62,12 @@ public:
 	void FinishSession(const bool bIsVictory);
 
 	/**
+	 * Starts a preparation timer.
+	 */
+	UFUNCTION(BlueprintCallable, Category="TrickyGameMode")
+	void StartPreparation();
+
+	/**
 	 * Returns session elapsed time.
 	 */
 	UFUNCTION(BlueprintCallable, Category="TrickyGameMode")

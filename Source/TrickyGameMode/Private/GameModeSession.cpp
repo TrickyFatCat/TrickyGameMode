@@ -85,6 +85,12 @@ void AGameModeSession::FinishSession(const bool bIsVictory)
 	OnSessionFinished.Broadcast(bIsVictory, FinalTime);
 }
 
+void AGameModeSession::StartPreparation()
+{
+	SetState(EGameModeState::Preparation);
+	GetWorldTimerManager().SetTimer(PreparationTimer, this, &AGameModeSession::StartSession, PreparationDuration);
+}
+
 float AGameModeSession::GetSessionElapsedTime() const
 {
 	if (!GetWorld())
