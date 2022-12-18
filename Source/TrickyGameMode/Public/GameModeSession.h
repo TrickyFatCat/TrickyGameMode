@@ -79,6 +79,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category="TrickyGameMode")
 	float GetSessionRemainingTime() const;
 
+	/**
+	 * Returns if the session must be start manually.
+	 */
+	UFUNCTION(BlueprintGetter, Category="TrickyGameMode")
+	bool IsManualStart() const;
+
 private:
 	// States
 	/**
@@ -94,7 +100,7 @@ private:
 	/**
 	 * If true the session will start automatically, else StartSession function must be called.
 	 */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="TrickyGameMode", meta=(AllowPrivateAccess))
+	UPROPERTY(EditAnywhere, BlueprintGetter = IsManualStart , Category="TrickyGameMode", meta=(AllowPrivateAccess))
 	bool bManualStart = false;
 
 	// Preparation timer

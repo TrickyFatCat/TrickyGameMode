@@ -113,6 +113,11 @@ float AGameModeSession::GetSessionRemainingTime() const
 	return bLimitSessionTime ? GetWorldTimerManager().GetTimerRemaining(SessionTimer) : GetSessionElapsedTime();
 }
 
+bool AGameModeSession::IsManualStart() const
+{
+	return bManualStart;
+}
+
 void AGameModeSession::SetState(const EGameModeState NewState)
 {
 	if (NewState == CurrentState)
