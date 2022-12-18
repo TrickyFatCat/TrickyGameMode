@@ -49,8 +49,9 @@ A basic game mode which has different states and timers implemented.
 
 1. `StartSession` - starts the session;
 2. `FinishSession` - finishes the session;
-3. `GetSessionElapsedTime` - returns session elapsed time;
-4. `GetSessionRemainingTime` - returns session remaining time;
+3. `StartPreparation` - starts a preparation timer;
+4. `GetSessionElapsedTime` - returns session elapsed time;
+5. `GetSessionRemainingTime` - returns session remaining time;
 
 #### Delegates
 
