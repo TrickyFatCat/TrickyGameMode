@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 2,
-	"VersionName": "1.1",
+	"Version": 3,
+	"VersionName": "1.1.1",
 	"FriendlyName": "TrickyGameMode",
 	"Description": "A plugin with a custom game mode with different states ",
 	"Category": "TrickyPrototyping",
@@ -20,9 +20,7 @@
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
 			"WhitelistPlatforms": [
-				"Win64",
-				"Linux",
-				"Mac"
+				"Win64"
 			]
 		}
 	]
