@@ -57,12 +57,6 @@ void APlayerControllerSession::OnGameModeStateChanged_Implementation(EGameModeSt
 
 	case EGameModeState::Finished:
 		ToggleInput(false, true, FInputModeUIOnly());
-
-		if (!GetPawn())
-			break;
-
-		StopMovement();
-		GetPawn()->TurnOff();
 		break;
 
 	case EGameModeState::Pause:
