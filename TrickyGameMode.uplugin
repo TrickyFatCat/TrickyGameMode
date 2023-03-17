@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 3,
-	"VersionName": "1.1.1",
+	"Version": 4,
+	"VersionName": "2.0a",
 	"FriendlyName": "TrickyGameMode",
 	"Description": "A plugin with a custom game mode with different states ",
 	"Category": "TrickyPrototyping",
