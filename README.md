@@ -79,5 +79,5 @@ A player controller actor which has pause and GameModeSession states functionali
 3. Choose this game mode in project settings;
 4. Create blueprint player controller inherited from PlayerController class;
 5. Adjust parameters as you want;
-6. Create input action "Pause" in input settings;
-7. Choose this player controller in project settings;
+6. Choose this player controller in project settings;
+7. To pause and unpause game call the `PauseGame` function in the controller;
