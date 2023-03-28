@@ -29,17 +29,6 @@ void APlayerControllerSession::BeginPlay()
 	Super::BeginPlay();
 }
 
-void APlayerControllerSession::SetupInputComponent()
-{
-	Super::SetupInputComponent();
-
-	FInputActionBinding& PauseBinding = InputComponent->BindAction("Pause",
-	                                                               IE_Pressed,
-	                                                               this,
-	                                                               &APlayerControllerSession::PauseGame);
-	PauseBinding.bExecuteWhenPaused = true;
-}
-
 void APlayerControllerSession::OnGameModeStateChanged_Implementation(EGameModeState NewState)
 {
 	auto ToggleInput = [&](const bool bEnableInput, const bool bShowCursor, const FInputModeDataBase& InputMode)

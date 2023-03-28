@@ -21,8 +21,6 @@ public:
 protected:
 	virtual void BeginPlay() override;
 
-	virtual void SetupInputComponent() override;
-
 	/**
 	 * Toggle if the mouse cursor must be shown when the session started.
 	 */
