@@ -11,13 +11,15 @@ ATrickyGameModeBase::ATrickyGameModeBase()
 
 void ATrickyGameModeBase::Tick(float DeltaSeconds)
 {
+	Super::Tick(DeltaSeconds);
+	
 #if WITH_EDITORONLY_DATA
 	if (bShowDebug)
 	{
 		const FString Message = FString::Printf(TEXT("%s\nPreparation : %.2f\nGame Time : %.2f"),
-		                                        *UEnum::GetValueAsString(CurrentState),
-		                                        GetWorldTimerManager().GetTimerRemaining(PreparationTimer),
-		                                        GetSessionElapsedTime());
+			*UEnum::GetValueAsString(CurrentState),
+			GetWorldTimerManager().GetTimerRemaining(PreparationTimer),
+			GetSessionElapsedTime());
 		GEngine->AddOnScreenDebugMessage(0,
 		                                 DeltaSeconds,
 		                                 FColor::Magenta,
@@ -26,8 +28,6 @@ void ATrickyGameModeBase::Tick(float DeltaSeconds)
 		                                 FVector2D{1.25f, 1.25f});
 	}
 #endif
-
-	Super::Tick(DeltaSeconds);
 }
 
 void ATrickyGameModeBase::StartPlay()
@@ -105,8 +105,6 @@ void ATrickyGameModeBase::FinishSession(const bool bIsVictory)
 	{
 		GetWorldTimerManager().ClearTimer(SessionTimer);
 	}
-
-	//OnSessionFinished.Broadcast(bIsVictory, FinalTime);
 }
 
 void ATrickyGameModeBase::StartPreparation()
@@ -117,22 +115,19 @@ void ATrickyGameModeBase::StartPreparation()
 
 float ATrickyGameModeBase::GetSessionElapsedTime() const
 {
-	if (!GetWorld())
+	if (!GetWorld() || CurrentState == EGameModeState::Preparation)
 	{
 		return -1.f;
 	}
 
-	if (bLimitSessionTime)
-	{
-		return GetWorldTimerManager().GetTimerElapsed(SessionTimer);
-	}
-
-	return GetWorld()->GetTimeSeconds() - TimeOnStart;
+	return bLimitSessionTime
+		       ? GetWorldTimerManager().GetTimerElapsed(SessionTimer)
+		       : (GetWorld()->GetTimeSeconds() - TimeOnStart);
 }
 
 float ATrickyGameModeBase::GetSessionRemainingTime() const
 {
-	if (!GetWorld())
+	if (!GetWorld() || CurrentState == EGameModeState::Preparation)
 	{
 		return -1.f;
 	}
