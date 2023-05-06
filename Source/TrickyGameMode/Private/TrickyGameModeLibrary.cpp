@@ -3,10 +3,10 @@
 
 #include "TrickyGameModeLibrary.h"
 
-#include "GameModeSession.h"
+#include "TrickyGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 
-AGameModeSession* UTrickyGameModeLibrary::GetSessionGameMode(const UObject* WorldContextObject)
+ATrickyGameModeBase* UTrickyGameModeLibrary::GetSessionGameMode(const UObject* WorldContextObject)
 {
-	return Cast<AGameModeSession>(UGameplayStatics::GetGameMode(WorldContextObject));
+	return Cast<ATrickyGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
 }

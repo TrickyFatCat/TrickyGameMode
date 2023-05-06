@@ -15,7 +15,7 @@ void APlayerControllerSession::BeginPlay()
 
 	if (World)
 	{
-		AGameModeSession* GameMode = Cast<AGameModeSession>(World->GetAuthGameMode());
+		ATrickyGameModeBase* GameMode = Cast<ATrickyGameModeBase>(World->GetAuthGameMode());
 
 		if (GameMode)
 		{
@@ -44,7 +44,7 @@ void APlayerControllerSession::OnGameModeStateChanged_Implementation(EGameModeSt
 		ToggleInput(true, bShowCursorOnStart, FInputModeGameOnly());
 		break;
 
-	case EGameModeState::Finished:
+	case EGameModeState::Lose:
 		ToggleInput(false, true, FInputModeUIOnly());
 		break;
 

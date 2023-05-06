@@ -6,7 +6,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "TrickyGameModeLibrary.generated.h"
 
-class AGameModeSession;
+class ATrickyGameModeBase;
 
 /**
  * 
@@ -18,5 +18,5 @@ class TRICKYGAMEMODE_API UTrickyGameModeLibrary : public UBlueprintFunctionLibra
 
 public:
 	UFUNCTION(BlueprintPure, Category="TrickyGameMode", meta=(WorldContext="WorldContextObject"))
-	static AGameModeSession* GetSessionGameMode(const UObject* WorldContextObject);
+	static ATrickyGameModeBase* GetSessionGameMode(const UObject* WorldContextObject);
 };

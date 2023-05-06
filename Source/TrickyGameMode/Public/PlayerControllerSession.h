@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-#include "GameModeSession.h"
+#include "TrickyGameModeBase.h"
 #include "PlayerControllerSession.generated.h"
 
 /**

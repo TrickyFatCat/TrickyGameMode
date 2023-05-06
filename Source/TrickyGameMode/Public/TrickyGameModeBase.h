@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "GameModeSession.generated.h"
+#include "TrickyGameModeBase.generated.h"
 
 UENUM(BlueprintType)
 enum class EGameModeState : uint8
@@ -13,35 +13,32 @@ enum class EGameModeState : uint8
 	Preparation,
 	InProgress,
 	Pause,
-	Finished
+	Win,
+	Lose,
+	Transition
 };
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnStateChangedSignature, EGameModeState, NewState);
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnSessionFinishedSignature, bool, bIsVictory, float, FinalTime);
 
 /**
  * A basic game mode which has different states and timers implemented.
  */
 UCLASS()
-class TRICKYGAMEMODE_API AGameModeSession : public AGameModeBase
+class TRICKYGAMEMODE_API ATrickyGameModeBase : public AGameModeBase
 {
 public:
 	GENERATED_BODY()
 
-	AGameModeSession();
+	ATrickyGameModeBase();
 
+protected:
+	virtual void Tick(float DeltaSeconds) override;
+public:
 	/**
 	 * Called when the state was changed.
 	 */
 	UPROPERTY(BlueprintAssignable, Category="TrickyGameMode")
 	FOnStateChangedSignature OnStateChanged;
-
-	/**
-	 * Called when the session was finished.
-	 */
-	UPROPERTY(BlueprintAssignable, Category="TrickyGameMode")
-	FOnSessionFinishedSignature OnSessionFinished;
 
 	virtual void StartPlay() override;
 
@@ -156,4 +153,9 @@ private:
 	FTimerHandle SessionTimer;
 
 	bool IsTimerActive(const FTimerHandle& TimerHandle) const;
+
+#if WITH_EDITORONLY_DATA
+	UPROPERTY(EditAnywhere, Category="TrickyGameMode", AdvancedDisplay)
+	bool bShowDebug = false;
+#endif
 };
