@@ -1,15 +1,15 @@
 // MIT License Copyright (c) Artyom "Tricky Fat Cat" Volkov
 
 
-#include "PlayerControllerSession.h"
+#include "TrickyPlayerControllerBase.h"
 
 #include "Kismet/GameplayStatics.h"
 
-APlayerControllerSession::APlayerControllerSession()
+ATrickyPlayerControllerBase::ATrickyPlayerControllerBase()
 {
 }
 
-void APlayerControllerSession::BeginPlay()
+void ATrickyPlayerControllerBase::BeginPlay()
 {
 	const UWorld* World = GetWorld();
 
@@ -19,7 +19,7 @@ void APlayerControllerSession::BeginPlay()
 
 		if (GameMode)
 		{
-			GameMode->OnStateChanged.AddDynamic(this, &APlayerControllerSession::OnGameModeStateChanged);
+			GameMode->OnStateChanged.AddDynamic(this, &ATrickyPlayerControllerBase::OnGameModeStateChanged);
 		}
 	}
 
@@ -29,7 +29,7 @@ void APlayerControllerSession::BeginPlay()
 	Super::BeginPlay();
 }
 
-void APlayerControllerSession::OnGameModeStateChanged_Implementation(EGameModeState NewState)
+void ATrickyPlayerControllerBase::OnGameModeStateChanged_Implementation(EGameModeState NewState)
 {
 	auto ToggleInput = [&](const bool bEnableInput, const bool bShowCursor, const FInputModeDataBase& InputMode)
 	{
@@ -45,6 +45,7 @@ void APlayerControllerSession::OnGameModeStateChanged_Implementation(EGameModeSt
 		break;
 
 	case EGameModeState::Lose:
+	case EGameModeState::Win:
 		ToggleInput(false, true, FInputModeUIOnly());
 		break;
 
@@ -58,7 +59,7 @@ void APlayerControllerSession::OnGameModeStateChanged_Implementation(EGameModeSt
 	}
 }
 
-void APlayerControllerSession::PauseGame()
+void ATrickyPlayerControllerBase::PauseGame()
 {
 	IsPaused()
 		? UGameplayStatics::SetGamePaused(GetWorld(), false)

@@ -5,18 +5,18 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "TrickyGameModeBase.h"
-#include "PlayerControllerSession.generated.h"
+#include "TrickyPlayerControllerBase.generated.h"
 
 /**
  * A player controller which has pause and GameModeSession states functionality.
  */
 UCLASS()
-class TRICKYGAMEMODE_API APlayerControllerSession : public APlayerController
+class TRICKYGAMEMODE_API ATrickyPlayerControllerBase : public APlayerController
 {
 	GENERATED_BODY()
 
 public:
-	APlayerControllerSession();
+	ATrickyPlayerControllerBase();
 
 protected:
 	virtual void BeginPlay() override;
