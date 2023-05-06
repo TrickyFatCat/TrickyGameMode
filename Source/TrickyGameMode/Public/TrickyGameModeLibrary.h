@@ -18,5 +18,8 @@ class TRICKYGAMEMODE_API UTrickyGameModeLibrary : public UBlueprintFunctionLibra
 
 public:
 	UFUNCTION(BlueprintPure, Category="TrickyGameMode", meta=(WorldContext="WorldContextObject"))
-	static ATrickyGameModeBase* GetSessionGameMode(const UObject* WorldContextObject);
+	static ATrickyGameModeBase* GetTrickyGameMode(const UObject* WorldContextObject);
+
+	UFUNCTION(BlueprintCallable, Category="TrickyGameMode", meta=(DefaultToSelf, WorldContext="WorldContextObject"))
+	static bool TogglePause(const UObject* WorldContextObject);
 };

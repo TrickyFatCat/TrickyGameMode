@@ -33,9 +33,10 @@ protected:
 	UFUNCTION(BlueprintNativeEvent, Category="Controller")
 	void OnGameModeStateChanged(EGameModeState NewState);
 
+public:
 	/**
 	 * Pauses the game
 	 */
 	UFUNCTION(BlueprintCallable, Category="Cotroller")
-	void PauseGame();
+	void TogglePause();
 };

@@ -23,7 +23,7 @@ void ATrickyPlayerControllerBase::BeginPlay()
 		}
 	}
 
-	bShowMouseCursor = false;
+	bShowMouseCursor = bShowCursorOnStart;
 	SetTickableWhenPaused(true);
 
 	Super::BeginPlay();
@@ -59,7 +59,7 @@ void ATrickyPlayerControllerBase::OnGameModeStateChanged_Implementation(EGameMod
 	}
 }
 
-void ATrickyPlayerControllerBase::PauseGame()
+void ATrickyPlayerControllerBase::TogglePause()
 {
 	IsPaused()
 		? UGameplayStatics::SetGamePaused(GetWorld(), false)
