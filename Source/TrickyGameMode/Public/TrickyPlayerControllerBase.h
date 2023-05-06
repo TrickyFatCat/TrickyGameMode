@@ -31,7 +31,9 @@ protected:
 	 * Called when the game state was changed.
 	 */
 	UFUNCTION(BlueprintNativeEvent, Category="Controller")
-	void OnGameModeStateChanged(EGameModeState NewState);
+	void HandleGameStateChange(EGameModeState NewState);
+
+	virtual void HandleGameStateChange_Implementation(EGameModeState NewState);
 
 public:
 	/**

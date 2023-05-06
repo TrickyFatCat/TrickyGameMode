@@ -19,7 +19,7 @@ void ATrickyPlayerControllerBase::BeginPlay()
 
 		if (GameMode)
 		{
-			GameMode->OnStateChanged.AddDynamic(this, &ATrickyPlayerControllerBase::OnGameModeStateChanged);
+			GameMode->OnStateChanged.AddDynamic(this, &ATrickyPlayerControllerBase::HandleGameStateChange);
 		}
 	}
 
@@ -29,7 +29,7 @@ void ATrickyPlayerControllerBase::BeginPlay()
 	Super::BeginPlay();
 }
 
-void ATrickyPlayerControllerBase::OnGameModeStateChanged_Implementation(EGameModeState NewState)
+void ATrickyPlayerControllerBase::HandleGameStateChange_Implementation(EGameModeState NewState)
 {
 	auto ToggleInput = [&](const bool bEnableInput, const bool bShowCursor, const FInputModeDataBase& InputMode)
 	{
