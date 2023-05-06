@@ -20,6 +20,6 @@ public:
 	UFUNCTION(BlueprintPure, Category="TrickyGameMode", meta=(WorldContext="WorldContextObject"))
 	static ATrickyGameModeBase* GetTrickyGameMode(const UObject* WorldContextObject);
 
-	UFUNCTION(BlueprintCallable, Category="TrickyGameMode", meta=(DefaultToSelf, WorldContext="WorldContextObject"))
-	static bool TogglePause(const UObject* WorldContextObject);
+	UFUNCTION(BlueprintCallable, Category="TrickyGameMode", meta=(DefaultToSelf="Target", WorldContext="Target"))
+	static bool TogglePause(const UObject* Target);
 };

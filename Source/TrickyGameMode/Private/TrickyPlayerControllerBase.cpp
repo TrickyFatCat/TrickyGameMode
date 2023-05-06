@@ -3,7 +3,6 @@
 
 #include "TrickyPlayerControllerBase.h"
 
-#include "Kismet/GameplayStatics.h"
 
 ATrickyPlayerControllerBase::ATrickyPlayerControllerBase()
 {
@@ -47,6 +46,7 @@ void ATrickyPlayerControllerBase::HandleGameStateChange_Implementation(EGameMode
 	case EGameModeState::Lose:
 	case EGameModeState::Win:
 		ToggleInput(false, true, FInputModeUIOnly());
+		StopMovement();
 		break;
 
 	case EGameModeState::Pause:
@@ -57,11 +57,4 @@ void ATrickyPlayerControllerBase::HandleGameStateChange_Implementation(EGameMode
 		ToggleInput(false, false, FInputModeUIOnly());
 		break;
 	}
-}
-
-void ATrickyPlayerControllerBase::TogglePause()
-{
-	IsPaused()
-		? UGameplayStatics::SetGamePaused(GetWorld(), false)
-		: UGameplayStatics::SetGamePaused(GetWorld(), true);
 }

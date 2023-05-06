@@ -34,11 +34,4 @@ protected:
 	void HandleGameStateChange(EGameModeState NewState);
 
 	virtual void HandleGameStateChange_Implementation(EGameModeState NewState);
-
-public:
-	/**
-	 * Pauses the game
-	 */
-	UFUNCTION(BlueprintCallable, Category="Cotroller")
-	void TogglePause();
 };

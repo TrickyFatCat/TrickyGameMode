@@ -12,21 +12,9 @@ ATrickyGameModeBase* UTrickyGameModeLibrary::GetTrickyGameMode(const UObject* Wo
 	return Cast<ATrickyGameModeBase>(UGameplayStatics::GetGameMode(WorldContextObject));
 }
 
-bool UTrickyGameModeLibrary::TogglePause(const UObject* WorldContextObject)
+bool UTrickyGameModeLibrary::TogglePause(const UObject* Target)
 {
-	if (!IsValid(WorldContextObject))
-	{
-		return false;
-	}
-
-	ATrickyPlayerControllerBase* PlayerController = Cast<ATrickyPlayerControllerBase>(UGameplayStatics::GetPlayerController(WorldContextObject, 0));
-
-	if (!PlayerController)
-	{
-		return false;
-	}
-
-	PlayerController->TogglePause();
-	return true;
+	return UGameplayStatics::IsGamePaused(Target)
+		       ? UGameplayStatics::SetGamePaused(Target, false)
+		       : UGameplayStatics::SetGamePaused(Target, true);
 }
-
