@@ -19,7 +19,7 @@ void ATrickyGameModeBase::Tick(float DeltaSeconds)
 		const FString Message = FString::Printf(TEXT("%s\nPreparation : %.2f\nGame Time : %.2f"),
 			*UEnum::GetValueAsString(CurrentState),
 			GetWorldTimerManager().GetTimerRemaining(PreparationTimer),
-			GetSessionElapsedTime());
+			GetSessionRemainingTime());
 		GEngine->AddOnScreenDebugMessage(0,
 		                                 DeltaSeconds,
 		                                 FColor::Magenta,
