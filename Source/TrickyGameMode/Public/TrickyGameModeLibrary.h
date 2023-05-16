@@ -9,7 +9,7 @@
 class ATrickyGameModeBase;
 
 /**
- * 
+ * TrickyGameMode helpers library
  */
 UCLASS()
 class TRICKYGAMEMODE_API UTrickyGameModeLibrary : public UBlueprintFunctionLibrary
