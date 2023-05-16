@@ -27,16 +27,23 @@ In this case the plugin can be used for any blueprint project.
 
 The plugin has actors:
 
-1. GameModeSession;
-2. PlayerControllerSession;
+1. TrickyGameModeBase;
+2. TrickyPlayerControllerBase;
 
-### GameModeSession
+### TrickyGameModeBase
 
 A basic game mode which has different states and timers implemented.
 
 #### Variables
 
-1. `CurrentState` - current state of the game;
+1. `CurrentState` - current state of the game:
+   - `Inactive` - a default state if `ManualStart` == true;
+   - `Preparation` - the game enters this state if `PreparationTimer` > 0;
+   - `InProgress` - a state in which gameplay happens
+   - `Pause` - a state during game pause
+   - `Win` - a state when the game session finished and the player won
+   - `Lose` - a state when the game session finished and the player lost
+   - `Transition` - a state to transition game between levels or menus
 2. `ManualStart` - if true the session will start automatically, else StartSession function must be called.
 3. `PreparationDuration` - defines the time of the preparation state;
 4. `PreparationTimer` - preparation timer handle;
@@ -44,6 +51,7 @@ A basic game mode which has different states and timers implemented.
 6. `SessionDuration` - session length if its time is limited;
 7. `VictoryOnTimeOver` - determines if session finished with victory when time is over;
 8. `FinalTime` - the final time of the session when it finishes;
+9. `ShowDebug` - toggles debug information in editor and debug builds;
 
 #### Functions
 
@@ -55,10 +63,9 @@ A basic game mode which has different states and timers implemented.
 
 #### Delegates
 
-1. `OnSessionChenged` - called when the state was changed;
-2. `OnSessionFinished` - called when the session was finished;
+1. `OnSessionChanged` - called when the state was changed;
 
-### PlayerControllerSession
+### TrickyPlayerControllerBase
 
 A player controller actor which has pause and GameModeSession states functionality;
 
