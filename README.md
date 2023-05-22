@@ -63,7 +63,7 @@ A basic game mode which has different states and timers implemented.
 
 #### Delegates
 
-1. `OnSessionChanged` - called when the state was changed;
+1. `HandleSessionChange` - called when the state was changed;
 
 ### TrickyPlayerControllerBase
 
