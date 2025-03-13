@@ -14,11 +14,6 @@ bool IGameStateControllerInterface::FinishGame_Implementation(const EGameResult 
 	return false;
 }
 
-bool IGameStateControllerInterface::StopGame(const EGameInactivityReason Reason)
-{
-	return false;
-}
-
 bool IGameStateControllerInterface::StopGame_Implementation(const EGameInactivityReason Reason)
 {
 	return false;
