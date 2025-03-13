@@ -3,15 +3,43 @@
 
 #include "TrickyGameModeBase.h"
 
-void ATrickyGameModeBase::SetInitialState(const EGameState Value)
+void ATrickyGameModeBase::StartPlay()
 {
-	if (InitialState == Value)
+	Super::StartPlay();
+
+	OnGameStopped.Broadcast(InitialInactivityReason);
+}
+
+bool ATrickyGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate)
+{
+	if (Super::SetPause(PC, CanUnpauseDelegate))
+	{
+		PauseGame();
+		return true;
+	}
+
+	return false;
+}
+
+bool ATrickyGameModeBase::ClearPause()
+{
+	if (Super::ClearPause())
+	{
+		UnpauseGame();
+		return true;
+	}
+
+	return false;
+}
+
+void ATrickyGameModeBase::SetInitialInactivityReason(const EGameInactivityReason Value)
+{
+	if (InitialInactivityReason == Value)
 	{
 		return;
 	}
 
-	InitialState = Value;
-	CurrentState = InitialState;
+	InitialInactivityReason = Value;
 }
 
 bool ATrickyGameModeBase::StartGame_Implementation()

@@ -16,6 +16,12 @@ class TRICKYGAMEMODE_API ATrickyGameModeBase : public AGameModeBase, public IGam
 	GENERATED_BODY()
 
 public:
+	virtual void StartPlay() override;
+
+	virtual bool SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate = FCanUnpause()) override;
+
+	virtual bool ClearPause() override;
+
 	UPROPERTY(BlueprintAssignable)
 	FOnGameStartedDynamicSignature OnGameStarted;
 
@@ -32,10 +38,10 @@ public:
 	FOnGameStoppedDynamicSignature OnGameStopped;
 
 	UFUNCTION(BlueprintGetter, Category=GameState)
-	FORCEINLINE EGameState GetInitialState() const { return InitialState; };
+	FORCEINLINE EGameInactivityReason GetInitialInactivityReason() const { return InitialInactivityReason; };
 
 	UFUNCTION(BlueprintSetter, Category=GameState)
-	void SetInitialState(const EGameState Value);
+	void SetInitialInactivityReason(const EGameInactivityReason Value);
 
 	UFUNCTION(BlueprintCallable, Category=GameState)
 	FORCEINLINE EGameState GetCurrentState() const { return CurrentState; };
@@ -50,16 +56,19 @@ public:
 	virtual bool StopGame_Implementation(const EGameInactivityReason Reason) override;
 
 private:
-	UPROPERTY(EditInstanceOnly, BlueprintGetter=GetInitialState, BlueprintSetter=SetInitialState, Category=GameState)
-	EGameState InitialState = EGameState::Inactive;
+	UPROPERTY(EditInstanceOnly,
+		BlueprintGetter=GetInitialInactivityReason,
+		BlueprintSetter=SetInitialInactivityReason,
+		Category=GameState)
+	EGameInactivityReason InitialInactivityReason = EGameInactivityReason::Transition;
 
 	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetCurrentState, Category=GameState)
 	EGameState CurrentState = EGameState::Inactive;
 
 	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetLastState, Category=GameState)
 	EGameState LastState = EGameState::Inactive;
-	
+
 	virtual bool PauseGame_Implementation() override;
-	
+
 	virtual bool UnpauseGame_Implementation() override;
 };
