@@ -28,6 +28,7 @@ enum class EGameInactivityReason : uint8
 {
 	Preparation,
 	Cutscene,
+	Transition,
 	Custom
 };
 
@@ -66,7 +67,7 @@ public:
 
 	virtual bool FinishGame_Implementation(const EGameResult Result);
 
-	UFUNCTION(Blueprintable, BuleprintNativeEvent, Category = GameState)
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	bool StopGame(const EGameInactivityReason Reason);
 
 	virtual bool StopGame_Implementation(const EGameInactivityReason Reason);
