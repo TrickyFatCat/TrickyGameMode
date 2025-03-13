@@ -112,7 +112,7 @@ bool ATrickyGameModeBase::StartTransition_Implementation()
 
 bool ATrickyGameModeBase::PauseGame_Implementation()
 {
-	if (CurrentState == EGameState::Paused)
+	if (CurrentState == EGameState::Paused || CurrentState == EGameState::Finished)
 	{
 		return false;
 	}
