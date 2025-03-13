@@ -3,8 +3,7 @@
 
 #include "GameStateControllerInterface.h"
 
-
-bool IGameStateControllerInterface::BeginGame_Implementation()
+bool IGameStateControllerInterface::StartGame_Implementation()
 {
 	return false;
 }

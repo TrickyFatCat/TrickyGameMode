@@ -64,7 +64,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	bool StartGame();
 
-	virtual bool BeginGame_Implementation();
+	virtual bool StartGame_Implementation();
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	bool FinishGame(const EGameResult Result);

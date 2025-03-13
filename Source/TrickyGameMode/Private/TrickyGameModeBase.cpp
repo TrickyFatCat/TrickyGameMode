@@ -44,13 +44,13 @@ void ATrickyGameModeBase::SetInitialInactivityReason(const EGameInactivityReason
 
 bool ATrickyGameModeBase::StartGame_Implementation()
 {
-	if (CurrentState != EGameState::Inactive)
+	if (CurrentState == EGameState::Active)
 	{
 		return false;
 	}
 
 	CurrentState = EGameState::Active;
-	ChangeInactivityReason(EGameInactivityReason::None);
+	Execute_ChangeInactivityReason(this, EGameInactivityReason::None);
 	OnGameStarted.Broadcast();
 	return true;
 }
@@ -75,7 +75,7 @@ bool ATrickyGameModeBase::StopGame_Implementation(const EGameInactivityReason Re
 	}
 
 	CurrentState = EGameState::Inactive;
-	ChangeInactivityReason(Reason);
+	Execute_ChangeInactivityReason(this, Reason);
 	OnGameStopped.Broadcast(Reason);
 	return true;
 }
@@ -87,7 +87,7 @@ bool ATrickyGameModeBase::StartPreparation_Implementation()
 		return StopGame(EGameInactivityReason::Preparation);
 	}
 
-	return ChangeInactivityReason(EGameInactivityReason::Preparation);
+	return Execute_ChangeInactivityReason(this, EGameInactivityReason::Preparation);
 }
 
 bool ATrickyGameModeBase::StartCutscene_Implementation()
@@ -97,7 +97,7 @@ bool ATrickyGameModeBase::StartCutscene_Implementation()
 		return StopGame(EGameInactivityReason::Cutscene);
 	}
 
-	return ChangeInactivityReason(EGameInactivityReason::Cutscene);
+	return Execute_ChangeInactivityReason(this, EGameInactivityReason::Cutscene);
 }
 
 bool ATrickyGameModeBase::StartTransition_Implementation()
@@ -107,7 +107,7 @@ bool ATrickyGameModeBase::StartTransition_Implementation()
 		return StopGame(EGameInactivityReason::Transition);
 	}
 	
-	return ChangeInactivityReason(EGameInactivityReason::Transition);
+	return Execute_ChangeInactivityReason(this, EGameInactivityReason::Transition);
 }
 
 bool ATrickyGameModeBase::PauseGame_Implementation()
