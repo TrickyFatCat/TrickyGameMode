@@ -50,6 +50,7 @@ bool ATrickyGameModeBase::StartGame_Implementation()
 	}
 
 	CurrentState = EGameState::Active;
+	ChangeInactivityReason(EGameInactivityReason::None);
 	OnGameStarted.Broadcast();
 	return true;
 }
@@ -74,8 +75,39 @@ bool ATrickyGameModeBase::StopGame_Implementation(const EGameInactivityReason Re
 	}
 
 	CurrentState = EGameState::Inactive;
+	ChangeInactivityReason(Reason);
 	OnGameStopped.Broadcast(Reason);
 	return true;
+}
+
+bool ATrickyGameModeBase::StartPreparation_Implementation()
+{
+	if (CurrentState != EGameState::Inactive)
+	{
+		return StopGame(EGameInactivityReason::Preparation);
+	}
+
+	return ChangeInactivityReason(EGameInactivityReason::Preparation);
+}
+
+bool ATrickyGameModeBase::StartCutscene_Implementation()
+{
+	if (CurrentState != EGameState::Inactive)
+	{
+		return StopGame(EGameInactivityReason::Cutscene);
+	}
+
+	return ChangeInactivityReason(EGameInactivityReason::Cutscene);
+}
+
+bool ATrickyGameModeBase::StartTransition_Implementation()
+{
+	if (CurrentState != EGameState::Inactive)
+	{
+		return StopGame(EGameInactivityReason::Transition);
+	}
+	
+	return ChangeInactivityReason(EGameInactivityReason::Transition);
 }
 
 bool ATrickyGameModeBase::PauseGame_Implementation()
@@ -100,5 +132,17 @@ bool ATrickyGameModeBase::UnpauseGame_Implementation()
 	
 	CurrentState = LastState;
 	OnGameUnpaused.Broadcast();
+	return true;
+}
+
+bool ATrickyGameModeBase::ChangeInactivityReason_Implementation(const EGameInactivityReason NewInactivityReason)
+{
+	if (CurrentInactivityReason == NewInactivityReason)
+	{
+		return false;
+	}
+
+	CurrentInactivityReason = NewInactivityReason;
+	OnInactivityReasonChanged.Broadcast(CurrentInactivityReason);
 	return true;
 }

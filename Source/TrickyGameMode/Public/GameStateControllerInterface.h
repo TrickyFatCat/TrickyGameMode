@@ -26,6 +26,7 @@ enum class EGameResult : uint8
 UENUM(BlueprintType)
 enum class EGameInactivityReason : uint8
 {
+	None,
 	Preparation,
 	Cutscene,
 	Transition,
@@ -41,6 +42,9 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGamePausedDynamicSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameUnpausedDynamicSignature);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameStoppedDynamicSignature, const EGameInactivityReason, Reason);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameInactivityReasonChangedDynamicSignature,
+                                            const EGameInactivityReason, InactivityReason);
 
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI, Blueprintable)
@@ -76,9 +80,29 @@ public:
 	bool PauseGame();
 
 	virtual bool PauseGame_Implementation();
-	
+
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	bool UnpauseGame();
 
 	virtual bool UnpauseGame_Implementation();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
+	bool ChangeInactivityReason(const EGameInactivityReason NewInactivityReason);
+
+	virtual bool ChangeInactivityReason_Implementation(const EGameInactivityReason NewInactivityReason);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
+	bool StartPreparation();
+
+	virtual bool StartPreparation_Implementation();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
+	bool StartCutscene();
+
+	virtual bool StartCutscene_Implementation();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=GameState)
+	bool StartTransition();
+
+	virtual bool StartTransition_Implementation();
 };

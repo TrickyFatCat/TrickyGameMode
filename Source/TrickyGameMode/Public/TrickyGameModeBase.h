@@ -37,11 +37,17 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnGameStoppedDynamicSignature OnGameStopped;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnGameInactivityReasonChangedDynamicSignature OnInactivityReasonChanged;
+
 	UFUNCTION(BlueprintGetter, Category=GameState)
 	FORCEINLINE EGameInactivityReason GetInitialInactivityReason() const { return InitialInactivityReason; };
 
 	UFUNCTION(BlueprintSetter, Category=GameState)
 	void SetInitialInactivityReason(const EGameInactivityReason Value);
+
+	UFUNCTION(BlueprintGetter, Category=GameState)
+	FORCEINLINE EGameInactivityReason GetCurrentInactivityReason() const { return CurrentInactivityReason; };
 
 	UFUNCTION(BlueprintCallable, Category=GameState)
 	FORCEINLINE EGameState GetCurrentState() const { return CurrentState; };
@@ -55,12 +61,21 @@ public:
 
 	virtual bool StopGame_Implementation(const EGameInactivityReason Reason) override;
 
+	virtual bool StartPreparation_Implementation() override;
+
+	virtual bool StartCutscene_Implementation() override;
+
+	virtual bool StartTransition_Implementation() override;
+
 private:
 	UPROPERTY(EditInstanceOnly,
 		BlueprintGetter=GetInitialInactivityReason,
 		BlueprintSetter=SetInitialInactivityReason,
 		Category=GameState)
 	EGameInactivityReason InitialInactivityReason = EGameInactivityReason::Transition;
+
+	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetCurrentInactivityReason, Category=GameState)
+	EGameInactivityReason CurrentInactivityReason = EGameInactivityReason::Transition;
 
 	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetCurrentState, Category=GameState)
 	EGameState CurrentState = EGameState::Inactive;
@@ -71,4 +86,6 @@ private:
 	virtual bool PauseGame_Implementation() override;
 
 	virtual bool UnpauseGame_Implementation() override;
+	
+	virtual bool ChangeInactivityReason_Implementation(const EGameInactivityReason NewInactivityReason) override;
 };

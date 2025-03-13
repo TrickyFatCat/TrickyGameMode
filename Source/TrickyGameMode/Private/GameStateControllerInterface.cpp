@@ -28,3 +28,23 @@ bool IGameStateControllerInterface::UnpauseGame_Implementation()
 {
 	return false;
 }
+
+bool IGameStateControllerInterface::ChangeInactivityReason_Implementation(const EGameInactivityReason NewInactivityReason)
+{
+	return false;
+}
+
+bool IGameStateControllerInterface::StartPreparation_Implementation()
+{
+	return false;
+}
+
+bool IGameStateControllerInterface::StartCutscene_Implementation()
+{
+	return false;
+}
+
+bool IGameStateControllerInterface::StartTransition_Implementation()
+{
+	return false;
+}
