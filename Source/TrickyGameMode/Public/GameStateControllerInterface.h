@@ -18,9 +18,10 @@ enum class EGameState : uint8
 UENUM(BlueprintType)
 enum class EGameResult : uint8
 {
+	None,
 	Win,
 	Loose,
-	Draw
+	Draw,
 };
 
 UENUM(BlueprintType)
@@ -105,4 +106,9 @@ public:
 	bool StartTransition();
 
 	virtual bool StartTransition_Implementation();
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
+	EGameResult GetGameResult() const;
+
+	virtual EGameResult GetGameResult_Implementation() const;
 };

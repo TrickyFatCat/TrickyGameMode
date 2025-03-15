@@ -110,6 +110,16 @@ bool ATrickyGameModeBase::StartTransition_Implementation()
 	return Execute_ChangeInactivityReason(this, EGameInactivityReason::Transition);
 }
 
+EGameResult ATrickyGameModeBase::GetGameResult_Implementation() const
+{
+	if (CurrentState != EGameState::Finished)
+	{
+		return EGameResult::None;
+	}
+
+	return GameResult;
+}
+
 bool ATrickyGameModeBase::PauseGame_Implementation()
 {
 	if (CurrentState == EGameState::Paused || CurrentState == EGameState::Finished)

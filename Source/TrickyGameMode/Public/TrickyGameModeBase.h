@@ -67,6 +67,8 @@ public:
 
 	virtual bool StartTransition_Implementation() override;
 
+	virtual EGameResult GetGameResult_Implementation() const override;
+
 private:
 	UPROPERTY(EditInstanceOnly,
 		BlueprintGetter=GetInitialInactivityReason,
@@ -82,6 +84,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetLastState, Category=GameState)
 	EGameState LastState = EGameState::Inactive;
+
+	UPROPERTY(VisibleAnywhere)
+	EGameResult GameResult = EGameResult::None;
 
 	virtual bool PauseGame_Implementation() override;
 

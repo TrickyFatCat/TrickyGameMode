@@ -47,3 +47,8 @@ bool IGameStateControllerInterface::StartTransition_Implementation()
 {
 	return false;
 }
+
+EGameResult IGameStateControllerInterface::GetGameResult_Implementation() const
+{
+	return  EGameResult::None;
+}
