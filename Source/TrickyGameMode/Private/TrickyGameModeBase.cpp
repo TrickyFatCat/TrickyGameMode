@@ -46,7 +46,7 @@ void ATrickyGameModeBase::SetInitialInactivityReason(const EGameInactivityReason
 
 bool ATrickyGameModeBase::StartGame_Implementation()
 {
-	if (CurrentState == EGameState::Active)
+	if (CurrentState == EGameState::Active || CurrentState == EGameState::Paused)
 	{
 		return false;
 	}
