@@ -70,6 +70,7 @@ bool ATrickyGameModeBase::FinishGame_Implementation(const EGameResult Result)
 	}
 
 	CurrentState = EGameState::Finished;
+	GameResult = Result;
 	OnGameFinished.Broadcast(Result);
 	
 #if WITH_EDITOR || !UE_BUILD_SHIPPING
