@@ -3,6 +3,8 @@
 
 #include "TrickyGameModeBase.h"
 
+DEFINE_LOG_CATEGORY(LogTrickyGameMode);
+
 void ATrickyGameModeBase::StartPlay()
 {
 	Super::StartPlay();
@@ -52,6 +54,11 @@ bool ATrickyGameModeBase::StartGame_Implementation()
 	CurrentState = EGameState::Active;
 	Execute_ChangeInactivityReason(this, EGameInactivityReason::None);
 	OnGameStarted.Broadcast();
+
+#if WITH_EDITOR || !UE_BUILD_SHIPPING
+	PrintLog("Game Started");
+#endif
+	
 	return true;
 }
 
@@ -64,6 +71,13 @@ bool ATrickyGameModeBase::FinishGame_Implementation(const EGameResult Result)
 
 	CurrentState = EGameState::Finished;
 	OnGameFinished.Broadcast(Result);
+	
+#if WITH_EDITOR || !UE_BUILD_SHIPPING
+	FString ResultName = "NONE";
+	GetGameResultName(ResultName, Result);
+	PrintLog(FString::Printf(TEXT("Game Finished with Result: %s"), *ResultName));
+#endif
+	
 	return true;
 }
 
@@ -77,6 +91,12 @@ bool ATrickyGameModeBase::StopGame_Implementation(const EGameInactivityReason Re
 	CurrentState = EGameState::Inactive;
 	Execute_ChangeInactivityReason(this, Reason);
 	OnGameStopped.Broadcast(Reason);
+
+#if WITH_EDITOR || !UE_BUILD_SHIPPING
+	FString ReasonName = "NONE";
+	GetInactivityReasonName(ReasonName, Reason);
+	PrintLog(FString::Printf(TEXT("Game Stopped with Reason: %s"), *ReasonName));
+#endif
 	return true;
 }
 
@@ -130,6 +150,11 @@ bool ATrickyGameModeBase::PauseGame_Implementation()
 	LastState = CurrentState;
 	CurrentState = EGameState::Paused;
 	OnGamePaused.Broadcast();
+
+#if WITH_EDITOR || !UE_BUILD_SHIPPING
+	PrintLog("Game Paused");
+#endif
+	
 	return true;
 }
 
@@ -142,6 +167,13 @@ bool ATrickyGameModeBase::UnpauseGame_Implementation()
 	
 	CurrentState = LastState;
 	OnGameUnpaused.Broadcast();
+	
+#if WITH_EDITOR || !UE_BUILD_SHIPPING
+	FString StateName = "NONE";
+	GetGameStateName(StateName, CurrentState);
+	PrintLog(FString::Printf(TEXT("Game Unpaused. Current State: %s"), *StateName));
+#endif
+	
 	return true;
 }
 
@@ -154,5 +186,39 @@ bool ATrickyGameModeBase::ChangeInactivityReason_Implementation(const EGameInact
 
 	CurrentInactivityReason = NewInactivityReason;
 	OnInactivityReasonChanged.Broadcast(CurrentInactivityReason);
+
+#if WITH_EDITOR || !UE_BUILD_SHIPPING
+	FString ReasonName = "NONE";
+	GetInactivityReasonName(ReasonName, CurrentInactivityReason);
+	PrintLog(FString::Printf(TEXT("Inactivity Reason changed to: %s"), *ReasonName));
+#endif
+	
 	return true;
 }
+
+#if WITH_EDITOR || !UE_BUILD_SHIPPING
+void ATrickyGameModeBase::PrintWarning(const FString& Message) const
+{
+	UE_LOG(LogTrickyGameMode, Warning, TEXT("%s"), *Message);
+}
+
+void ATrickyGameModeBase::PrintLog(const FString& Message) const
+{
+	UE_LOG(LogTrickyGameMode, Display, TEXT("%s"), *Message);
+}
+
+void ATrickyGameModeBase::GetGameStateName(FString& StateName, const EGameState State)
+{
+	StateName = StaticEnum<EGameState>()->GetNameStringByValue(static_cast<int64>(State));
+}
+
+void ATrickyGameModeBase::GetInactivityReasonName(FString& ReasonName, const EGameInactivityReason Reason)
+{
+	ReasonName = StaticEnum<EGameInactivityReason>()->GetNameStringByValue(static_cast<int64>(Reason));
+}
+
+void ATrickyGameModeBase::GetGameResultName(FString& ResultName, const EGameResult Result)
+{
+	ResultName = StaticEnum<EGameResult>()->GetNameStringByValue(static_cast<int64>(Result));
+}
+#endif

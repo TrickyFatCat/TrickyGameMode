@@ -93,4 +93,16 @@ private:
 	virtual bool UnpauseGame_Implementation() override;
 	
 	virtual bool ChangeInactivityReason_Implementation(const EGameInactivityReason NewInactivityReason) override;
+
+#if EDITOR_ONLY || !UE_BUILD_SHIPPING
+	void PrintWarning(const FString& Message) const;
+
+	void PrintLog(const FString& Message) const;
+
+	static void GetGameStateName(FString& StateName, const EGameState State);
+
+	static void GetInactivityReasonName(FString& ReasonName, const EGameInactivityReason Reason);
+
+	static void GetGameResultName(FString& ResultName, const EGameResult Result);
+#endif
 };

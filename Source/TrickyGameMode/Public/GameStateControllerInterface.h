@@ -6,6 +6,8 @@
 #include "UObject/Interface.h"
 #include "GameStateControllerInterface.generated.h"
 
+DECLARE_LOG_CATEGORY_EXTERN(LogTrickyGameMode, Log, All)
+
 UENUM(BlueprintType)
 enum class EGameState : uint8
 {
