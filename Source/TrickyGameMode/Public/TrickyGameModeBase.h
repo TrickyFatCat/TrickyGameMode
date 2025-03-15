@@ -60,13 +60,22 @@ public:
 	FOnGameInactivityReasonChangedDynamicSignature OnInactivityReasonChanged;
 
 	UFUNCTION(BlueprintGetter, Category=GameState)
-	FORCEINLINE EGameInactivityReason GetInitialInactivityReason() const { return InitialInactivityReason; };
+	FORCEINLINE float GetPreparationDuration() const { return PreparationDuration; }
+
+	UFUNCTION(BlueprintSetter, Category=GameState)
+	void SetPreparationDuration(const float Value);
+
+	UFUNCTION(BlueprintGetter, Category=GameState)
+	FORCEINLINE FTimerHandle GetPreparationTimerHandle() const { return PreparationTimerHandle; }
+	
+	UFUNCTION(BlueprintGetter, Category=GameState)
+	FORCEINLINE EGameInactivityReason GetInitialInactivityReason() const { return InitialInactivityReason; }
 
 	UFUNCTION(BlueprintSetter, Category=GameState)
 	void SetInitialInactivityReason(const EGameInactivityReason Value);
 
 	UFUNCTION(BlueprintGetter, Category=GameState)
-	FORCEINLINE EGameInactivityReason GetCurrentInactivityReason() const { return CurrentInactivityReason; };
+	FORCEINLINE EGameInactivityReason GetCurrentInactivityReason() const { return CurrentInactivityReason; }
 
 	UFUNCTION(BlueprintCallable, Category=GameState)
 	FORCEINLINE EGameState GetCurrentState() const { return CurrentState; };
@@ -98,35 +107,60 @@ private:
 		Category=GameState)
 	EGameInactivityReason InitialInactivityReason = EGameInactivityReason::Transition;
 
+	UPROPERTY(EditInstanceOnly,
+		BlueprintGetter=GetPreparationDuration,
+		BlueprintSetter=SetPreparationDuration,
+		Category=GameState,
+		meta=(ClampMin="0.0", UIMin="0.0"))
+	float PreparationDuration = 3.0f;
+
+	UPROPERTY(BlueprintGetter=GetPreparationTimerHandle, Category=GameState)
+	FTimerHandle PreparationTimerHandle;
+
 	/**
 	 * Current inacvity reason.
 	 */
-	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetCurrentInactivityReason, Category=GameState)
+	UPROPERTY(VisibleInstanceOnly, BlueprintGetter=GetCurrentInactivityReason, Category=GameState)
 	EGameInactivityReason CurrentInactivityReason = EGameInactivityReason::Transition;
 
 	/**
 	 * Current Game State.
 	 */
-	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetCurrentState, Category=GameState)
+	UPROPERTY(VisibleInstanceOnly, BlueprintGetter=GetCurrentState, Category=GameState)
 	EGameState CurrentState = EGameState::Inactive;
 
 	/**
 	 * Last Game State. Used for unpausing the game.
 	 */
-	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetLastState, Category=GameState)
+	UPROPERTY(VisibleInstanceOnly, BlueprintGetter=GetLastState, Category=GameState)
 	EGameState LastState = EGameState::Inactive;
 
 	/**
 	 * Current game result.
 	 */
-	UPROPERTY(VisibleAnywhere, Category=GameState)
+	UPROPERTY(VisibleInstanceOnly, Category=GameState)
 	EGameResult GameResult = EGameResult::None;
 
 	virtual bool PauseGame_Implementation() override;
 
 	virtual bool UnpauseGame_Implementation() override;
-	
+
 	virtual bool ChangeInactivityReason_Implementation(const EGameInactivityReason NewInactivityReason) override;
+
+	UFUNCTION()
+	bool StartPreparationTimer();
+
+	UFUNCTION()
+	void HandlePreparationTimerFinished();
+
+	UFUNCTION()
+	bool StopPreparationTimer();
+
+	UFUNCTION()
+	bool PausePreparationTimer();
+
+	UFUNCTION()
+	bool UnPausePreparationTimer();
 
 #if WITH_EDITOR || !UE_BUILD_SHIPPING
 	void PrintWarning(const FString& Message) const;
@@ -140,3 +174,5 @@ private:
 	static void GetGameResultName(FString& ResultName, const EGameResult Result);
 #endif
 };
+
+
