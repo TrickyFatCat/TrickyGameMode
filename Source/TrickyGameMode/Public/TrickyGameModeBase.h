@@ -94,7 +94,7 @@ private:
 	
 	virtual bool ChangeInactivityReason_Implementation(const EGameInactivityReason NewInactivityReason) override;
 
-#if EDITOR_ONLY || !UE_BUILD_SHIPPING
+#if WITH_EDITOR || !UE_BUILD_SHIPPING
 	void PrintWarning(const FString& Message) const;
 
 	void PrintLog(const FString& Message) const;
