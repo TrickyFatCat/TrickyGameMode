@@ -24,37 +24,46 @@ public:
 	virtual bool ClearPause() override;
 
 	/**
-	 * Called when the game was successfully started.
+	 * A delegate that is triggered when the game starts.
+	 * This delegate can be bound to dynamically in Blueprint to handle game start events,
+	 * allowing external scripts or logic to respond to the beginning of the game.
 	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnGameStartedDynamicSignature OnGameStarted;
 
 	/**
-	 * Called when the game was successfully finished.
+	 * A dynamic multicast delegate that is triggered when the game finishes, broadcasting the result of the game.
+	 * Allows listeners to respond to the conclusion of a game, providing the game's final outcome as a parameter.
 	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnGameFinishedDynamicSignature OnGameFinished;
 
 	/**
-	 * Called when the game was successfully paused.
+	 * A dynamic delegate that is broadcast when the game is paused.
+	 * Enables Blueprint functionality to respond to the game entering the paused state.
 	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnGamePausedDynamicSignature OnGamePaused;
 
 	/**
-	 * Called when the game was successfully unpaused.
+	 * A delegate that is broadcasted when the game is unpaused.
+	 * Allows external systems or components to respond when the game state transitions
+	 * from paused to its previous state.
 	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnGameUnpausedDynamicSignature OnGameUnpaused;
 
 	/**
-	 * Called when the game was successfully stopped.
+	 * Delegate that is triggered when the game stops, providing a reason for the stoppage.
+	 * This event can be used to perform actions or notify systems when the game transitions to an inactive state.
 	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnGameStoppedDynamicSignature OnGameStopped;
 
 	/**
-	 * Called when the inactivity reason successfully changed.
+	 * A delegate that is triggered when the inactivity reason of the game state changes.
+	 * It allows external systems to react to updates in the game's inactivity reason,
+	 * enabling dynamic responses to changes in the game's flow or state.
 	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnGameInactivityReasonChangedDynamicSignature OnInactivityReasonChanged;
@@ -89,37 +98,22 @@ public:
 	virtual EGameResult GetGameResult_Implementation() const override;
 
 private:
-	/**
-	 * Initial inactivity state.
-	 */
 	UPROPERTY(EditInstanceOnly,
 		BlueprintGetter=GetInitialInactivityReason,
 		BlueprintSetter=SetInitialInactivityReason,
 		Category=GameState)
 	EGameInactivityReason InitialInactivityReason = EGameInactivityReason::Transition;
 
-	/**
-	 * Current inactivity state.
-	 */
 	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetCurrentInactivityReason, Category=GameState)
 	EGameInactivityReason CurrentInactivityReason = EGameInactivityReason::Transition;
 
-	/**
-	 * Current game state.
-	 */
 	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetCurrentState, Category=GameState)
 	EGameState CurrentState = EGameState::Inactive;
 
-	/**
-	 * Last game state which was before pause.
-	 */
 	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetLastState, Category=GameState)
 	EGameState LastState = EGameState::Inactive;
 
-	/**
-	 * Current game result when it finishes.
-	 */
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category=GameState)
 	EGameResult GameResult = EGameResult::None;
 
 	virtual bool PauseGame_Implementation() override;
