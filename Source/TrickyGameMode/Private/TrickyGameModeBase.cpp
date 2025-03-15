@@ -9,7 +9,8 @@ void ATrickyGameModeBase::StartPlay()
 {
 	Super::StartPlay();
 
-	OnGameStopped.Broadcast(InitialInactivityReason);
+	CurrentInactivityReason = InitialInactivityReason;
+	OnGameStopped.Broadcast(CurrentInactivityReason);
 }
 
 bool ATrickyGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpauseDelegate)
