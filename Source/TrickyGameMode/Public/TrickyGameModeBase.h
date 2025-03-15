@@ -8,9 +8,10 @@
 #include "TrickyGameModeBase.generated.h"
 
 /**
- * 
+ * A custom game mode base class that provides extensive functionality
+ * to control the game state and gameplay flow. 
  */
-UCLASS()
+UCLASS(Blueprintable, BlueprintType)
 class TRICKYGAMEMODE_API ATrickyGameModeBase : public AGameModeBase, public IGameStateControllerInterface
 {
 	GENERATED_BODY()
@@ -22,21 +23,39 @@ public:
 
 	virtual bool ClearPause() override;
 
+	/**
+	 * Called when the game was successfully started.
+	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnGameStartedDynamicSignature OnGameStarted;
 
+	/**
+	 * Called when the game was successfully finished.
+	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnGameFinishedDynamicSignature OnGameFinished;
 
+	/**
+	 * Called when the game was successfully paused.
+	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnGamePausedDynamicSignature OnGamePaused;
 
+	/**
+	 * Called when the game was successfully unpaused.
+	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnGameUnpausedDynamicSignature OnGameUnpaused;
 
+	/**
+	 * Called when the game was successfully stopped.
+	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnGameStoppedDynamicSignature OnGameStopped;
 
+	/**
+	 * Called when the inactivity reason successfully changed.
+	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnGameInactivityReasonChangedDynamicSignature OnInactivityReasonChanged;
 
@@ -70,21 +89,36 @@ public:
 	virtual EGameResult GetGameResult_Implementation() const override;
 
 private:
+	/**
+	 * Initial inactivity state.
+	 */
 	UPROPERTY(EditInstanceOnly,
 		BlueprintGetter=GetInitialInactivityReason,
 		BlueprintSetter=SetInitialInactivityReason,
 		Category=GameState)
 	EGameInactivityReason InitialInactivityReason = EGameInactivityReason::Transition;
 
+	/**
+	 * Current inactivity state.
+	 */
 	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetCurrentInactivityReason, Category=GameState)
 	EGameInactivityReason CurrentInactivityReason = EGameInactivityReason::Transition;
 
+	/**
+	 * Current game state.
+	 */
 	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetCurrentState, Category=GameState)
 	EGameState CurrentState = EGameState::Inactive;
 
+	/**
+	 * Last game state which was before pause.
+	 */
 	UPROPERTY(VisibleAnywhere, BlueprintGetter=GetLastState, Category=GameState)
 	EGameState LastState = EGameState::Inactive;
 
+	/**
+	 * Current game result when it finishes.
+	 */
 	UPROPERTY(VisibleAnywhere)
 	EGameResult GameResult = EGameResult::None;
 

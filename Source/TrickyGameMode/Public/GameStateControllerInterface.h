@@ -8,6 +8,9 @@
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTrickyGameMode, Log, All)
 
+/**
+ * Represents the various states of the game during its lifecycle.
+ */
 UENUM(BlueprintType)
 enum class EGameState : uint8
 {
@@ -17,6 +20,9 @@ enum class EGameState : uint8
 	Paused
 };
 
+/**
+ * Represents the possible outcomes of a game session.
+ */
 UENUM(BlueprintType)
 enum class EGameResult : uint8
 {
@@ -26,6 +32,9 @@ enum class EGameResult : uint8
 	Draw,
 };
 
+/**
+ * Represents the possible reasons for game inactivity.
+ */
 UENUM(BlueprintType)
 enum class EGameInactivityReason : uint8
 {
@@ -57,58 +66,111 @@ class UGameStateControllerInterface : public UInterface
 };
 
 /**
- * 
+ * Interface for controlling the game state.
  */
 class TRICKYGAMEMODE_API IGameStateControllerInterface
 {
 	GENERATED_BODY()
 
 public:
+	/**
+	 * Initiates the start of the game, transitioning it into an active state.
+	 *
+	 * @retur True if the game was successfully started.
+	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	bool StartGame();
 
 	virtual bool StartGame_Implementation();
 
+	/**
+	 * Completes the game based on the provided result.
+	 *
+	 * @param Result The result of the game.
+	 * @return True if the game was successfully finished.
+	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	bool FinishGame(const EGameResult Result);
 
 	virtual bool FinishGame_Implementation(const EGameResult Result);
 
+	/**
+	 * Stops the ongoing game and transitions it out of an active state based on the specified inactivity reason.
+	 *
+	 * @param Reason The reason for the game's inactivity.
+	 * @return True if the game was successfully stopped.
+	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	bool StopGame(const EGameInactivityReason Reason);
 
 	virtual bool StopGame_Implementation(const EGameInactivityReason Reason);
 
+	/**
+	 * Pauses the ongoing game and transitions it into a paused state.
+	 *
+	 * @return True if the game was successfully paused.
+	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	bool PauseGame();
 
 	virtual bool PauseGame_Implementation();
 
+	/**
+	 * Resumes a previously paused game, transitioning it back into an active state.
+	 *
+	 * @return True if the game was successfully unpaused.
+	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	bool UnpauseGame();
 
 	virtual bool UnpauseGame_Implementation();
 
+	/**
+	 * Updates the current inactivity reason for the game.
+	 *
+	 * @param NewInactivityReason The new inactivity reason.
+	 * @return True if the inactivity reason was successfully changed.
+	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	bool ChangeInactivityReason(const EGameInactivityReason NewInactivityReason);
 
 	virtual bool ChangeInactivityReason_Implementation(const EGameInactivityReason NewInactivityReason);
 
+	/**
+	 * Initiates the preparation phase of the game.
+	 *
+	 * @return True if the preparation phase was successfully started.
+	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	bool StartPreparation();
 
 	virtual bool StartPreparation_Implementation();
 
+	/**
+	 * Initiates the start of a cutscene within the game.
+	 *
+	 * @return True if the cutscene was successfully started.
+	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	bool StartCutscene();
 
 	virtual bool StartCutscene_Implementation();
 
+	/**
+	 * Initiates the transitioning phase within the game.
+	 *
+	 * @return True if the transition process was successfully started.
+	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category=GameState)
 	bool StartTransition();
 
 	virtual bool StartTransition_Implementation();
 
+	/**
+	 * Returns the current result of the game.
+	 *
+	 * @return The current game result.
+	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	EGameResult GetGameResult() const;
 
