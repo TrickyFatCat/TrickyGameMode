@@ -2,6 +2,8 @@
 
 
 #include "TrickyGameModeBase.h"
+#include "Engine/World.h"
+#include "TimerManager.h"
 
 DEFINE_LOG_CATEGORY(LogTrickyGameMode);
 
