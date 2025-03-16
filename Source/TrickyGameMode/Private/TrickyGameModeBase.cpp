@@ -135,7 +135,16 @@ bool ATrickyGameModeBase::StartPreparation_Implementation()
 		return StopGame(EGameInactivityReason::Preparation);
 	}
 
-	return Execute_ChangeInactivityReason(this, EGameInactivityReason::Preparation);
+	if (!Execute_ChangeInactivityReason(this, EGameInactivityReason::Preparation))
+	{
+		return false;
+	}
+
+	if (PreparationDuration > 0.0f)
+	{
+		StartPreparationTimer();
+	}
+	return true;
 }
 
 bool ATrickyGameModeBase::StartCutscene_Implementation()
@@ -235,7 +244,7 @@ bool ATrickyGameModeBase::StartPreparationTimer()
 
 	FTimerManager& TimerManager = World->GetTimerManager();
 
-	if (!PreparationTimerHandle.IsValid() || TimerManager.IsTimerActive(PreparationTimerHandle))
+	if (TimerManager.IsTimerActive(PreparationTimerHandle))
 	{
 		return false;
 	}
@@ -254,7 +263,7 @@ bool ATrickyGameModeBase::StartPreparationTimer()
 
 void ATrickyGameModeBase::HandlePreparationTimerFinished()
 {
-	StartGame();
+	Execute_StartGame(this);
 }
 
 bool ATrickyGameModeBase::StopPreparationTimer()
@@ -268,7 +277,7 @@ bool ATrickyGameModeBase::StopPreparationTimer()
 
 	FTimerManager& TimerManager = World->GetTimerManager();
 
-	if (!PreparationTimerHandle.IsValid() || !TimerManager.IsTimerActive(PreparationTimerHandle))
+	if (!TimerManager.IsTimerActive(PreparationTimerHandle))
 	{
 		return false;
 	}
@@ -293,7 +302,7 @@ bool ATrickyGameModeBase::PausePreparationTimer()
 
 	FTimerManager& TimerManager = World->GetTimerManager();
 
-	if (!PreparationTimerHandle.IsValid() || !TimerManager.IsTimerActive(PreparationTimerHandle))
+	if (!TimerManager.IsTimerActive(PreparationTimerHandle))
 	{
 		return false;
 	}
@@ -319,7 +328,7 @@ bool ATrickyGameModeBase::UnPausePreparationTimer()
  
  	FTimerManager& TimerManager = World->GetTimerManager();
  
- 	if (!PreparationTimerHandle.IsValid() || TimerManager.IsTimerActive(PreparationTimerHandle))
+ 	if (TimerManager.IsTimerActive(PreparationTimerHandle))
  	{
  		return false;
  	}
