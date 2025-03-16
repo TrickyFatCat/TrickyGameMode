@@ -77,10 +77,10 @@ public:
 	UFUNCTION(BlueprintGetter, Category=GameState)
 	FORCEINLINE EGameInactivityReason GetCurrentInactivityReason() const { return CurrentInactivityReason; }
 
-	UFUNCTION(BlueprintCallable, Category=GameState)
+	UFUNCTION(BlueprintGetter, Category=GameState)
 	FORCEINLINE EGameState GetCurrentState() const { return CurrentState; };
 
-	UFUNCTION(BlueprintCallable, Category=GameState)
+	UFUNCTION(BlueprintGetter, Category=GameState)
 	FORCEINLINE EGameState GetLastState() const { return LastState; };
 
 	virtual bool StartGame_Implementation() override;
