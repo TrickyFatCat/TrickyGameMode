@@ -122,7 +122,7 @@ private:
 	FTimerHandle PreparationTimerHandle;
 
 	/**
-	 * Current inacvity reason.
+	 * Current inactivity reason.
 	 */
 	UPROPERTY(VisibleInstanceOnly, BlueprintGetter=GetCurrentInactivityReason, Category=GameState)
 	EGameInactivityReason CurrentInactivityReason = EGameInactivityReason::Transition;
