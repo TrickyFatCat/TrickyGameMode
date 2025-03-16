@@ -101,13 +101,13 @@ private:
 	/**
 	 * An inactivity reason which will be used when the game mode initialized
 	 */
-	UPROPERTY(EditInstanceOnly,
+	UPROPERTY(EditDefaultsOnly,
 		BlueprintGetter=GetInitialInactivityReason,
 		BlueprintSetter=SetInitialInactivityReason,
 		Category=GameState)
 	EGameInactivityReason InitialInactivityReason = EGameInactivityReason::Transition;
 
-	UPROPERTY(EditInstanceOnly,
+	UPROPERTY(EditDefaultsOnly,
 		BlueprintGetter=GetPreparationDuration,
 		BlueprintSetter=SetPreparationDuration,
 		Category=GameState,
