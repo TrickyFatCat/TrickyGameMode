@@ -107,6 +107,10 @@ private:
 		Category=GameState)
 	EGameInactivityReason InitialInactivityReason = EGameInactivityReason::Transition;
 
+	/**
+	 * Determines the duration of the preparation phase in seconds before the game transitions to the active state.
+	 * @warning This value cannot be less than 0.0.
+	 */
 	UPROPERTY(EditDefaultsOnly,
 		BlueprintGetter=GetPreparationDuration,
 		BlueprintSetter=SetPreparationDuration,
