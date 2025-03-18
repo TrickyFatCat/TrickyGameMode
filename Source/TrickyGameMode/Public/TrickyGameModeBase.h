@@ -227,31 +227,31 @@ private:
 
 	virtual bool ChangeInactivityReason_Implementation(const EGameInactivityReason NewInactivityReason) override;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool StartPreparationTimer();
 
 	UFUNCTION()
 	void HandlePreparationTimerFinished();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool StopPreparationTimer();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool PausePreparationTimer();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool UnPausePreparationTimer();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool StartGameTimer();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool StopGameTimer();
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool PauseGameTimer() const;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool UnPauseGameTimer() const;
 
 	UFUNCTION()
