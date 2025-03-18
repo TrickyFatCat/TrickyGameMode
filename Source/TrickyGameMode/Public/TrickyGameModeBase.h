@@ -7,10 +7,13 @@
 #include "GameFramework/GameModeBase.h"
 #include "TrickyGameModeBase.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPreparationTimerStartedDynamicSignature, float, Duration);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPreparationTimerStoppedDynamicSignature, float, ElapsedTime);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameTimerStartedDynamicSignature, float, Duration);
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameTimerStoppedDynamicSignature,
-                                            float, RemainingTime);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameTimerStoppedDynamicSignature, float, ElapsedTime);
 
 /**
  * A custom game mode base class that provides extensive functionality
@@ -64,6 +67,12 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnGameInactivityReasonChangedDynamicSignature OnInactivityReasonChanged;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnPreparationTimerStartedDynamicSignature OnPreparationTimerStarted;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnPreparationTimerStoppedDynamicSignature OnPreparationTimerStopped;
+	
 	UPROPERTY(BlueprintAssignable)
 	FOnGameTimerStartedDynamicSignature OnGameTimerStarted;
 

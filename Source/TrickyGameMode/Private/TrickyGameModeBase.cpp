@@ -116,7 +116,7 @@ bool ATrickyGameModeBase::StartGame_Implementation()
 	{
 		StartGameTime = GetWorld()->GetTimeSeconds();
 	}
-	
+
 	OnGameStarted.Broadcast();
 
 #if WITH_EDITOR || !UE_BUILD_SHIPPING
@@ -247,7 +247,6 @@ float ATrickyGameModeBase::GetGameRemainingTime_Implementation() const
 }
 
 
-
 bool ATrickyGameModeBase::PauseGame_Implementation()
 {
 	if (CurrentState == EGameState::Paused || CurrentState == EGameState::Finished)
@@ -325,10 +324,13 @@ bool ATrickyGameModeBase::StartPreparationTimer()
 	                      &ATrickyGameModeBase::HandlePreparationTimerFinished,
 	                      PreparationDuration,
 	                      false);
+	OnPreparationTimerStarted.Broadcast(PreparationDuration);
 
 #if WITH_EDITOR || !UE_BUILD_SHIPPING
-	PrintLog(FString::Printf(TEXT("Preparation Timer started. Duration: %.2f"), PreparationDuration));
+	const FString LogMessage = FString::Printf(TEXT("Preparation Timer started. Duration: %.2f"), PreparationDuration);
+	PrintLog(LogMessage);
 #endif
+	
 	return true;
 }
 
@@ -353,10 +355,13 @@ bool ATrickyGameModeBase::StopPreparationTimer()
 		return false;
 	}
 
+	const float ElapsedTime = TimerManager.GetTimerElapsed(PreparationTimerHandle);
 	TimerManager.ClearTimer(PreparationTimerHandle);
+	OnPreparationTimerStopped.Broadcast(ElapsedTime);
 
 #if WITH_EDITOR || !UE_BUILD_SHIPPING
-	PrintLog("Preparation Timer stopped");
+	const FString LogMessage = FString::Printf(TEXT("Preparation Timer stopped. Elapsed time: %.2f"), ElapsedTime);
+	PrintLog(LogMessage);
 #endif
 
 	return true;
@@ -381,8 +386,8 @@ bool ATrickyGameModeBase::PausePreparationTimer()
 	TimerManager.PauseTimer(PreparationTimerHandle);
 
 #if WITH_EDITOR || !UE_BUILD_SHIPPING
-	const float RemainingTime = TimerManager.GetTimerRemaining(PreparationTimerHandle);
-	const FString LogMessage = FString::Printf(TEXT("Preparation Timer paused. Time: %.2f"), RemainingTime);
+	const float ElapsedTime = TimerManager.GetTimerElapsed(PreparationTimerHandle);
+	const FString LogMessage = FString::Printf(TEXT("Preparation Timer paused. Elapsed Time: %.2f"), ElapsedTime);
 	PrintLog(LogMessage);
 #endif
 
@@ -408,8 +413,8 @@ bool ATrickyGameModeBase::UnPausePreparationTimer()
 	TimerManager.UnPauseTimer(PreparationTimerHandle);
 
 #if WITH_EDITOR || !UE_BUILD_SHIPPING
-	const float RemainingTime = TimerManager.GetTimerRemaining(PreparationTimerHandle);
-	const FString LogMessage = FString::Printf(TEXT("Preparation Timer un-paused. Time: %.2f"), RemainingTime);
+	const float ElapsedTime = TimerManager.GetTimerRemaining(PreparationTimerHandle);
+	const FString LogMessage = FString::Printf(TEXT("Preparation Timer un-paused. Elapsed time: %.2f"), ElapsedTime);
 	PrintLog(LogMessage);
 #endif
 
@@ -431,14 +436,15 @@ bool ATrickyGameModeBase::StartGameTimer()
 	{
 		return false;
 	}
-	
+
 	TimerManager.SetTimer(GameTimerHandle, this, &ATrickyGameModeBase::HandleGameTimerFinished, GameDuration, false);
 	OnGameTimerStarted.Broadcast(GameDuration);
-	
+
 #if WITH_EDITOR || !UE_BUILD_SHIPPING
-	PrintLog(FString::Printf(TEXT("Game Timer started. Duration: %.2f"), GameDuration));
+	const FString LogMessage = FString::Printf(TEXT("Game Timer started. Duration: %.2f"), GameDuration);
+	PrintLog(LogMessage);
 #endif
-	
+
 	return true;
 }
 
@@ -458,9 +464,15 @@ bool ATrickyGameModeBase::StopGameTimer()
 		return false;
 	}
 
-	const float RemainingTime = TimerManager.GetTimerRemaining(GameTimerHandle);
-	OnGameTimerStopped.Broadcast(RemainingTime);
+	const float ElapsedTime = TimerManager.GetTimerElapsed(GameTimerHandle);
+	OnGameTimerStopped.Broadcast(ElapsedTime);
 	TimerManager.ClearTimer(GameTimerHandle);
+
+#if WITH_EDITOR || !UE_BUILD_SHIPPING
+	const FString LogMessage = FString::Printf(TEXT("Game Timer stopped. Elapsed time: %.2f"), ElapsedTime);
+	PrintLog(LogMessage);
+#endif
+
 	return true;
 }
 
@@ -481,6 +493,13 @@ bool ATrickyGameModeBase::PauseGameTimer() const
 	}
 
 	TimerManager.PauseTimer(GameTimerHandle);
+	
+#if WITH_EDITOR || !UE_BUILD_SHIPPING
+	const float ElapsedTime = TimerManager.GetTimerElapsed(GameTimerHandle);
+	const FString LogMessage = FString::Printf(TEXT("Game Timer paused. Elapsed Time: %.2f"), ElapsedTime);
+	PrintLog(LogMessage);
+#endif
+	
 	return true;
 }
 
@@ -501,6 +520,13 @@ bool ATrickyGameModeBase::UnPauseGameTimer() const
 	}
 
 	TimerManager.UnPauseTimer(GameTimerHandle);
+	
+#if WITH_EDITOR || !UE_BUILD_SHIPPING
+	const float ElapsedTime = TimerManager.GetTimerElapsed(GameTimerHandle);
+	const FString LogMessage = FString::Printf(TEXT("Game Timer unpaused. Elapsed Time: %.2f"), ElapsedTime);
+	PrintLog(LogMessage);
+#endif
+	
 	return true;
 }
 
