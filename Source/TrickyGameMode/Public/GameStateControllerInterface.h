@@ -175,4 +175,14 @@ public:
 	EGameResult GetGameResult() const;
 
 	virtual EGameResult GetGameResult_Implementation() const;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
+	float GetGameElapsedTime() const;
+
+	virtual float GetGameElapsedTime_Implementation() const;
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
+	float GetGameRemainingTime() const;
+
+	virtual float GetGameRemainingTime_Implementation() const;
 };

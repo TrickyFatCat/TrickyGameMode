@@ -52,3 +52,13 @@ EGameResult IGameStateControllerInterface::GetGameResult_Implementation() const
 {
 	return  EGameResult::None;
 }
+
+float IGameStateControllerInterface::GetGameElapsedTime_Implementation() const
+{
+	return -1.f;
+}
+
+float IGameStateControllerInterface::GetGameRemainingTime_Implementation() const
+{
+	return -1.f;
+}

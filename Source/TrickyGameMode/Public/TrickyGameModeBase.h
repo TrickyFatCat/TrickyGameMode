@@ -7,6 +7,11 @@
 #include "GameFramework/GameModeBase.h"
 #include "TrickyGameModeBase.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameTimerStartedDynamicSignature, float, Duration);
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameTimerStoppedDynamicSignature,
+                                            float, RemainingTime);
+
 /**
  * A custom game mode base class that provides extensive functionality
  * to control the game state and gameplay flow. 
@@ -59,6 +64,12 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnGameInactivityReasonChangedDynamicSignature OnInactivityReasonChanged;
 
+	UPROPERTY(BlueprintAssignable)
+	FOnGameTimerStartedDynamicSignature OnGameTimerStarted;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnGameTimerStoppedDynamicSignature OnGameTimerStopped;
+
 	UFUNCTION(BlueprintGetter, Category=GameState)
 	FORCEINLINE float GetPreparationDuration() const { return PreparationDuration; }
 
@@ -67,7 +78,28 @@ public:
 
 	UFUNCTION(BlueprintGetter, Category=GameState)
 	FORCEINLINE FTimerHandle GetPreparationTimerHandle() const { return PreparationTimerHandle; }
-	
+
+	UFUNCTION(BlueprintGetter, Category=GameState)
+	FORCEINLINE bool GetIsSessionTimeLimited() const { return bIsSessionTimeLimited; }
+
+	UFUNCTION(BlueprintSetter, Category=GameState)
+	void SetIsSessionTimeLimited(const bool Value);
+
+	UFUNCTION(BlueprintGetter, Category=GameState)
+	FORCEINLINE float GetSessionDuration() const { return SessionDuration; }
+
+	UFUNCTION(BlueprintSetter, Category=GameState)
+	void SetSessionDuration(const float Value);
+
+	UFUNCTION(BlueprintGetter, Category=GameState)
+	FORCEINLINE FTimerHandle GetSessionTimerHandle() const { return GameTimerHandle; }
+
+	UFUNCTION(BlueprintGetter, Category=GameState)
+	FORCEINLINE EGameResult GetDefaultTimeOverResult() const { return DefaultTimeOverResult; }
+
+	UFUNCTION(BlueprintSetter, Category=GameState)
+	void SetDefaultTimeOverResult(const EGameResult Value);
+
 	UFUNCTION(BlueprintGetter, Category=GameState)
 	FORCEINLINE EGameInactivityReason GetInitialInactivityReason() const { return InitialInactivityReason; }
 
@@ -97,6 +129,16 @@ public:
 
 	virtual EGameResult GetGameResult_Implementation() const override;
 
+	virtual float GetGameElapsedTime_Implementation() const override;
+
+	virtual float GetGameRemainingTime_Implementation() const override;
+
+protected:
+	UFUNCTION(BlueprintNativeEvent, Category=GameState)
+	EGameResult CalculateTimeOverResult();
+
+	virtual EGameResult CalculateTimeOverResult_Implementation() { return DefaultTimeOverResult; }
+
 private:
 	/**
 	 * An inactivity reason which will be used when the game mode initialized
@@ -120,6 +162,31 @@ private:
 
 	UPROPERTY(BlueprintGetter=GetPreparationTimerHandle, Category=GameState)
 	FTimerHandle PreparationTimerHandle;
+
+	UPROPERTY(EditDefaultsOnly,
+		BlueprintGetter=GetIsSessionTimeLimited,
+		BlueprintSetter=SetIsSessionTimeLimited,
+		Category=GameState)
+	bool bIsSessionTimeLimited = false;
+
+	UPROPERTY(EditDefaultsOnly,
+		BlueprintGetter=GetSessionDuration,
+		BlueprintSetter=SetSessionDuration,
+		Category=GameState,
+		meta=(ClampMin="1.0", UIMin="1.0", EditCondition="bIsSessionTimeLimited"))
+	float SessionDuration = 120.0f;
+
+	UPROPERTY(EditDefaultsOnly,
+		BlueprintGetter=GetDefaultTimeOverResult,
+		BlueprintSetter=SetDefaultTimeOverResult,
+		Category=GameState,
+		meta=(EditCondition="bIsSessionTimeLimited"))
+	EGameResult DefaultTimeOverResult = EGameResult::Win;
+
+	UPROPERTY(BlueprintGetter=GetSessionTimerHandle, Category=GameState)
+	FTimerHandle GameTimerHandle;
+
+	float StartGameTime = 0.f;
 
 	/**
 	 * Current inactivity reason.
@@ -166,6 +233,21 @@ private:
 	UFUNCTION()
 	bool UnPausePreparationTimer();
 
+	UFUNCTION()
+	bool StartGameTimer();
+
+	UFUNCTION()
+	bool StopGameTimer();
+
+	UFUNCTION()
+	bool PauseGameTimer() const;
+
+	UFUNCTION()
+	bool UnPauseGameTimer() const;
+
+	UFUNCTION()
+	void HandleGameTimerFinished();
+
 #if WITH_EDITOR || !UE_BUILD_SHIPPING
 	void PrintWarning(const FString& Message) const;
 
@@ -178,5 +260,3 @@ private:
 	static void GetGameResultName(FString& ResultName, const EGameResult Result);
 #endif
 };
-
-

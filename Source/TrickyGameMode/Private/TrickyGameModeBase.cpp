@@ -30,7 +30,7 @@ bool ATrickyGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpause
 		{
 			PausePreparationTimer();
 		}
-		
+
 		return true;
 	}
 
@@ -63,6 +63,31 @@ void ATrickyGameModeBase::SetPreparationDuration(const float Value)
 	PreparationDuration = Value;
 }
 
+void ATrickyGameModeBase::SetIsSessionTimeLimited(const bool Value)
+{
+	bIsSessionTimeLimited = Value;
+}
+
+void ATrickyGameModeBase::SetSessionDuration(const float Value)
+{
+	if (Value <= 0.0f)
+	{
+		return;
+	}
+
+	SessionDuration = Value;
+}
+
+void ATrickyGameModeBase::SetDefaultTimeOverResult(const EGameResult Value)
+{
+	if (DefaultTimeOverResult == Value)
+	{
+		return;
+	}
+
+	DefaultTimeOverResult = Value;
+}
+
 void ATrickyGameModeBase::SetInitialInactivityReason(const EGameInactivityReason Value)
 {
 	if (InitialInactivityReason == Value)
@@ -82,6 +107,16 @@ bool ATrickyGameModeBase::StartGame_Implementation()
 
 	CurrentState = EGameState::Active;
 	Execute_ChangeInactivityReason(this, EGameInactivityReason::None);
+
+	if (bIsSessionTimeLimited)
+	{
+		StartGameTimer();
+	}
+	else
+	{
+		StartGameTime = GetWorld()->GetTimeSeconds();
+	}
+	
 	OnGameStarted.Broadcast();
 
 #if WITH_EDITOR || !UE_BUILD_SHIPPING
@@ -178,6 +213,40 @@ EGameResult ATrickyGameModeBase::GetGameResult_Implementation() const
 
 	return GameResult;
 }
+
+float ATrickyGameModeBase::GetGameElapsedTime_Implementation() const
+{
+	UWorld* World = GetWorld();
+	float ElapsedTime = -1.f;
+
+	if (!IsValid(World) || !World->IsGameWorld())
+	{
+		return ElapsedTime;
+	}
+
+	ElapsedTime = bIsSessionTimeLimited
+		              ? GetWorldTimerManager().GetTimerElapsed(GameTimerHandle)
+		              : GetWorld()->GetTimeSeconds() - StartGameTime;
+	return ElapsedTime;
+}
+
+float ATrickyGameModeBase::GetGameRemainingTime_Implementation() const
+{
+	UWorld* World = GetWorld();
+	float ElapsedTime = -1.f;
+
+	if (!IsValid(World) || !World->IsGameWorld())
+	{
+		return ElapsedTime;
+	}
+
+	ElapsedTime = bIsSessionTimeLimited
+		              ? GetWorldTimerManager().GetTimerRemaining(GameTimerHandle)
+		              : GetWorld()->GetTimeSeconds() - StartGameTime;
+	return ElapsedTime;
+}
+
+
 
 bool ATrickyGameModeBase::PauseGame_Implementation()
 {
@@ -289,7 +358,7 @@ bool ATrickyGameModeBase::StopPreparationTimer()
 #if WITH_EDITOR || !UE_BUILD_SHIPPING
 	PrintLog("Preparation Timer stopped");
 #endif
-	
+
 	return true;
 }
 
@@ -316,34 +385,124 @@ bool ATrickyGameModeBase::PausePreparationTimer()
 	const FString LogMessage = FString::Printf(TEXT("Preparation Timer paused. Time: %.2f"), RemainingTime);
 	PrintLog(LogMessage);
 #endif
-	
+
 	return true;
 }
 
 bool ATrickyGameModeBase::UnPausePreparationTimer()
-{	const UWorld* World = GetWorld();
- 
- 	if (!IsValid(World) || !World->IsGameWorld())
- 	{
- 		return false;
- 	}
- 
- 	FTimerManager& TimerManager = World->GetTimerManager();
- 
- 	if (TimerManager.IsTimerActive(PreparationTimerHandle))
- 	{
- 		return false;
- 	}
- 
- 	TimerManager.UnPauseTimer(PreparationTimerHandle);
+{
+	const UWorld* World = GetWorld();
+
+	if (!IsValid(World) || !World->IsGameWorld())
+	{
+		return false;
+	}
+
+	FTimerManager& TimerManager = World->GetTimerManager();
+
+	if (TimerManager.IsTimerActive(PreparationTimerHandle))
+	{
+		return false;
+	}
+
+	TimerManager.UnPauseTimer(PreparationTimerHandle);
 
 #if WITH_EDITOR || !UE_BUILD_SHIPPING
 	const float RemainingTime = TimerManager.GetTimerRemaining(PreparationTimerHandle);
 	const FString LogMessage = FString::Printf(TEXT("Preparation Timer un-paused. Time: %.2f"), RemainingTime);
 	PrintLog(LogMessage);
 #endif
+
+	return true;
+}
+
+bool ATrickyGameModeBase::StartGameTimer()
+{
+	const UWorld* World = GetWorld();
+
+	if (!IsValid(World) || !World->IsGameWorld())
+	{
+		return false;
+	}
+
+	FTimerManager& TimerManager = World->GetTimerManager();
+
+	if (TimerManager.IsTimerActive(GameTimerHandle))
+	{
+		return false;
+	}
 	
- 	return true;
+	TimerManager.SetTimer(GameTimerHandle, this, &ATrickyGameModeBase::HandleGameTimerFinished, SessionDuration, false);
+	OnGameTimerStarted.Broadcast(SessionDuration);
+	return true;
+}
+
+bool ATrickyGameModeBase::StopGameTimer()
+{
+	const UWorld* World = GetWorld();
+
+	if (!IsValid(World) || !World->IsGameWorld())
+	{
+		return false;
+	}
+
+	FTimerManager& TimerManager = World->GetTimerManager();
+
+	if (!TimerManager.IsTimerActive(GameTimerHandle))
+	{
+		return false;
+	}
+
+	const float RemainingTime = TimerManager.GetTimerRemaining(GameTimerHandle);
+	OnGameTimerStopped.Broadcast(RemainingTime);
+	TimerManager.ClearTimer(GameTimerHandle);
+	return true;
+}
+
+bool ATrickyGameModeBase::PauseGameTimer() const
+{
+	const UWorld* World = GetWorld();
+
+	if (!IsValid(World) || !World->IsGameWorld())
+	{
+		return false;
+	}
+
+	FTimerManager& TimerManager = World->GetTimerManager();
+
+	if (!TimerManager.IsTimerActive(GameTimerHandle))
+	{
+		return false;
+	}
+
+	TimerManager.PauseTimer(GameTimerHandle);
+	return true;
+}
+
+bool ATrickyGameModeBase::UnPauseGameTimer() const
+{
+	const UWorld* World = GetWorld();
+
+	if (!IsValid(World) || !World->IsGameWorld())
+	{
+		return false;
+	}
+
+	FTimerManager& TimerManager = World->GetTimerManager();
+
+	if (!TimerManager.IsTimerActive(GameTimerHandle))
+	{
+		return false;
+	}
+
+	TimerManager.UnPauseTimer(GameTimerHandle);
+	return true;
+}
+
+void ATrickyGameModeBase::HandleGameTimerFinished()
+{
+	DefaultTimeOverResult = CalculateTimeOverResult();
+	Execute_FinishGame(this, DefaultTimeOverResult);
 }
 
 #if WITH_EDITOR || !UE_BUILD_SHIPPING
