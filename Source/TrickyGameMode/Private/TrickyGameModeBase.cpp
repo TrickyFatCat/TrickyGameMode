@@ -68,14 +68,14 @@ void ATrickyGameModeBase::SetIsSessionTimeLimited(const bool Value)
 	bIsSessionTimeLimited = Value;
 }
 
-void ATrickyGameModeBase::SetSessionDuration(const float Value)
+void ATrickyGameModeBase::SetGameDuration(const float Value)
 {
 	if (Value <= 0.0f)
 	{
 		return;
 	}
 
-	SessionDuration = Value;
+	GameDuration = Value;
 }
 
 void ATrickyGameModeBase::SetDefaultTimeOverResult(const EGameResult Value)
@@ -432,8 +432,13 @@ bool ATrickyGameModeBase::StartGameTimer()
 		return false;
 	}
 	
-	TimerManager.SetTimer(GameTimerHandle, this, &ATrickyGameModeBase::HandleGameTimerFinished, SessionDuration, false);
-	OnGameTimerStarted.Broadcast(SessionDuration);
+	TimerManager.SetTimer(GameTimerHandle, this, &ATrickyGameModeBase::HandleGameTimerFinished, GameDuration, false);
+	OnGameTimerStarted.Broadcast(GameDuration);
+	
+#if WITH_EDITOR || !UE_BUILD_SHIPPING
+	PrintLog(FString::Printf(TEXT("Game Timer started. Duration: %.2f"), GameDuration));
+#endif
+	
 	return true;
 }
 

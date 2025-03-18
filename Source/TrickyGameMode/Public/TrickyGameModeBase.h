@@ -86,10 +86,10 @@ public:
 	void SetIsSessionTimeLimited(const bool Value);
 
 	UFUNCTION(BlueprintGetter, Category=GameState)
-	FORCEINLINE float GetSessionDuration() const { return SessionDuration; }
+	FORCEINLINE float GetGameDuration() const { return GameDuration; }
 
 	UFUNCTION(BlueprintSetter, Category=GameState)
-	void SetSessionDuration(const float Value);
+	void SetGameDuration(const float Value);
 
 	UFUNCTION(BlueprintGetter, Category=GameState)
 	FORCEINLINE FTimerHandle GetSessionTimerHandle() const { return GameTimerHandle; }
@@ -174,7 +174,7 @@ private:
 		BlueprintSetter=SetSessionDuration,
 		Category=GameState,
 		meta=(ClampMin="1.0", UIMin="1.0", EditCondition="bIsSessionTimeLimited"))
-	float SessionDuration = 120.0f;
+	float GameDuration = 120.0f;
 
 	UPROPERTY(EditDefaultsOnly,
 		BlueprintGetter=GetDefaultTimeOverResult,
