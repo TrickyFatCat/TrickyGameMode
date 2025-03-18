@@ -67,15 +67,29 @@ public:
 	UPROPERTY(BlueprintAssignable)
 	FOnGameInactivityReasonChangedDynamicSignature OnInactivityReasonChanged;
 
+	/**
+	 * Triggered when a preparation timer started.
+	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnPreparationTimerStartedDynamicSignature OnPreparationTimerStarted;
 
+	/**
+	 * Triggered when a preparation timer stopped.
+	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnPreparationTimerStoppedDynamicSignature OnPreparationTimerStopped;
 	
+	/**
+	 * Triggered when a game timer started.
+	 * @warning called only if bIsGameTimeLimited == true
+	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnGameTimerStartedDynamicSignature OnGameTimerStarted;
 
+	/**
+	 * Triggered when a game timer stopped.
+	 * @warning called only if bIsGameTimeLimited == true
+	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnGameTimerStoppedDynamicSignature OnGameTimerStopped;
 
@@ -137,12 +151,18 @@ public:
 	virtual bool StartTransition_Implementation() override;
 
 	virtual EGameResult GetGameResult_Implementation() const override;
-
+	
 	virtual float GetGameElapsedTime_Implementation() const override;
 
 	virtual float GetGameRemainingTime_Implementation() const override;
 
 protected:
+	/**
+	 * Calculates the game result when the game time is over.
+	 * @warting it's used only when bIsGameTimeLimited == true.
+	 * 
+	 * @return The result of the game when time is over.
+	 */
 	UFUNCTION(BlueprintNativeEvent, Category=GameState)
 	EGameResult CalculateTimeOverResult();
 
@@ -172,12 +192,19 @@ private:
 	UPROPERTY(BlueprintGetter=GetPreparationTimerHandle, Category=GameState)
 	FTimerHandle PreparationTimerHandle;
 
+	/**
+	 * Defines whether the game session is time-limited.
+	 */
 	UPROPERTY(EditDefaultsOnly,
 		BlueprintGetter=GetIsSessionTimeLimited,
 		BlueprintSetter=SetIsSessionTimeLimited,
 		Category=GameState)
 	bool bIsSessionTimeLimited = false;
 
+	/**
+	 * Defines duration of the game timer.
+	 * @warning Is used only if bIsSessionTimeLimited == true.
+	 */
 	UPROPERTY(EditDefaultsOnly,
 		BlueprintGetter=GetGameDuration,
 		BlueprintSetter=SetGameDuration,
@@ -185,6 +212,10 @@ private:
 		meta=(ClampMin="1.0", UIMin="1.0", EditCondition="bIsSessionTimeLimited"))
 	float GameDuration = 120.0f;
 
+	/**
+	 * Defines the default outcome of the game when the session time expires.
+	 * @warting Is used only if bIsSessionTimeLimited == true.
+	 */
 	UPROPERTY(EditDefaultsOnly,
 		BlueprintGetter=GetDefaultTimeOverResult,
 		BlueprintSetter=SetDefaultTimeOverResult,
@@ -227,30 +258,70 @@ private:
 
 	virtual bool ChangeInactivityReason_Implementation(const EGameInactivityReason NewInactivityReason) override;
 
+	/**
+	 * Starts the preparation timer.
+	 *
+	 * @return True if the timer was successfully started.
+	 */
 	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool StartPreparationTimer();
 
 	UFUNCTION()
 	void HandlePreparationTimerFinished();
 
+	/**
+	 * Stops the preparation timer.
+	 *
+	 * @return True if the preparation timer was successfully stopped.
+	 */
 	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool StopPreparationTimer();
 
+	/**
+	 * Pauses the preparation timer.
+	 *
+	 * @return True if the preparation timer was successfully paused.
+	 */
 	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool PausePreparationTimer();
 
+	/**
+	 * Unpauses the preparation timer.
+	 *
+	 * @return True if the preparation timer is successfully unpaused.
+	 */
 	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool UnPausePreparationTimer();
 
+	/**
+	 * Starts the game timer.
+	 *
+	 * @return True if the game timer was successfully started;.
+	 */
 	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool StartGameTimer();
 
+	/**
+	 * Stops the game timer.
+	 *
+	 * @return True if the game timer was successfully stopped.
+	 */
 	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool StopGameTimer();
 
+	/**
+	 * Pauses the game timer.
+	 *
+	 * @return True if the game timer was successfully paused.
+	 */
 	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool PauseGameTimer() const;
 
+	/**
+	 * Unpauses the game timer.
+	 *
+	 * @return True if the game timer was successfully unpaused.
+	 */
 	UFUNCTION(BlueprintCallable, Category=GameState)
 	bool UnPauseGameTimer() const;
 

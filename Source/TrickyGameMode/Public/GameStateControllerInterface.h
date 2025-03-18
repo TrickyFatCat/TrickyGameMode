@@ -176,11 +176,21 @@ public:
 
 	virtual EGameResult GetGameResult_Implementation() const;
 
+	/**
+	 * Retrieves the elapsed time since the game started.
+	 *
+	 * @return elapsed game time in seconds.
+	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	float GetGameElapsedTime() const;
 
 	virtual float GetGameElapsedTime_Implementation() const;
 
+	/**
+	 * Retrieves the remaining time for the ongoing game.
+	 *
+	 * @return remaining game time in seconds.
+	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	float GetGameRemainingTime() const;
 
