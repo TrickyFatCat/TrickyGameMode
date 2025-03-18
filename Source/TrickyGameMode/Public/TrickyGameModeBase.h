@@ -170,8 +170,8 @@ private:
 	bool bIsSessionTimeLimited = false;
 
 	UPROPERTY(EditDefaultsOnly,
-		BlueprintGetter=GetSessionDuration,
-		BlueprintSetter=SetSessionDuration,
+		BlueprintGetter=GetGameDuration,
+		BlueprintSetter=SetGameDuration,
 		Category=GameState,
 		meta=(ClampMin="1.0", UIMin="1.0", EditCondition="bIsSessionTimeLimited"))
 	float GameDuration = 120.0f;
