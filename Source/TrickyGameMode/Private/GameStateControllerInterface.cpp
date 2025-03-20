@@ -48,6 +48,11 @@ bool IGameStateControllerInterface::StartTransition_Implementation()
 	return false;
 }
 
+EGameState IGameStateControllerInterface::GetGameState_Implementation() const
+{
+	return EGameState::Inactive;
+}
+
 EGameResult IGameStateControllerInterface::GetGameResult_Implementation() const
 {
 	return  EGameResult::None;

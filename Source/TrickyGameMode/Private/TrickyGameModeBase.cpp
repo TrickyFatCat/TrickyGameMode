@@ -204,6 +204,11 @@ bool ATrickyGameModeBase::StartTransition_Implementation()
 	return Execute_ChangeInactivityReason(this, EGameInactivityReason::Transition);
 }
 
+EGameState ATrickyGameModeBase::GetGameState_Implementation() const
+{
+	return CurrentState;
+}
+
 EGameResult ATrickyGameModeBase::GetGameResult_Implementation() const
 {
 	if (CurrentState != EGameState::Finished)

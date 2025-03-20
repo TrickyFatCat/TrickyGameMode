@@ -167,6 +167,16 @@ public:
 	virtual bool StartTransition_Implementation();
 
 	/**
+	 * Returns the current state of the game.
+	 * 
+	 * @return The current game state.
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
+	EGameState GetGameState() const;
+
+	virtual EGameState GetGameState_Implementation() const;
+
+	/**
 	 * Returns the current result of the game.
 	 *
 	 * @return The current game result.
