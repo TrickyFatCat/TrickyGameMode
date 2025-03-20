@@ -151,6 +151,8 @@ public:
 	virtual bool StartTransition_Implementation() override;
 
 	virtual EGameResult GetGameResult_Implementation() const override;
+
+	virtual EGameInactivityReason GetGameInactivityReason_Implementation() const override;
 	
 	virtual float GetGameElapsedTime_Implementation() const override;
 

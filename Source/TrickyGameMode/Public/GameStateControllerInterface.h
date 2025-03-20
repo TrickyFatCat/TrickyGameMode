@@ -177,6 +177,16 @@ public:
 	virtual EGameResult GetGameResult_Implementation() const;
 
 	/**
+	 * Returns the current inactivity reason.
+	 * 
+	 * @return The current inactivity reason
+	 */
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
+	EGameInactivityReason GetGameInactivityReason() const;
+	
+	virtual EGameInactivityReason GetGameInactivityReason_Implementation() const;
+
+	/**
 	 * Retrieves the elapsed time since the game started.
 	 *
 	 * @return elapsed game time in seconds.

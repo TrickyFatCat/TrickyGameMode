@@ -214,6 +214,16 @@ EGameResult ATrickyGameModeBase::GetGameResult_Implementation() const
 	return GameResult;
 }
 
+EGameInactivityReason ATrickyGameModeBase::GetGameInactivityReason_Implementation() const
+{
+	if (CurrentState != EGameState::Inactive)
+	{
+		return EGameInactivityReason::None;
+	}
+
+	return CurrentInactivityReason;
+}
+
 float ATrickyGameModeBase::GetGameElapsedTime_Implementation() const
 {
 	UWorld* World = GetWorld();

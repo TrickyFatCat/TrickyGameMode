@@ -53,6 +53,11 @@ EGameResult IGameStateControllerInterface::GetGameResult_Implementation() const
 	return  EGameResult::None;
 }
 
+EGameInactivityReason IGameStateControllerInterface::GetGameInactivityReason_Implementation() const
+{
+	return EGameInactivityReason::None;
+}
+
 float IGameStateControllerInterface::GetGameElapsedTime_Implementation() const
 {
 	return -1.f;
