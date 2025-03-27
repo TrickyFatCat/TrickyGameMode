@@ -82,11 +82,11 @@ bool UTrickyGameModeLibrary::StartTransition(const UObject* WorldContextObject)
 	return IGameStateControllerInterface::Execute_StartTransition(UGameplayStatics::GetGameMode(WorldContextObject));
 }
 
-EGameState UTrickyGameModeLibrary::GetGameState(const UObject* WorldContextObject)
+ETrickyGameState UTrickyGameModeLibrary::GetGameState(const UObject* WorldContextObject)
 {
 	if (!ImplementsGameStateInterface(WorldContextObject))
 	{
-		return EGameState::Inactive;
+		return ETrickyGameState::Inactive;
 	}
 
 	return IGameStateControllerInterface::Execute_GetGameState(UGameplayStatics::GetGameMode(WorldContextObject));

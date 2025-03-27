@@ -133,10 +133,10 @@ public:
 	FORCEINLINE EGameInactivityReason GetCurrentInactivityReason() const { return CurrentInactivityReason; }
 
 	UFUNCTION(BlueprintGetter, Category=GameState)
-	FORCEINLINE EGameState GetCurrentState() const { return CurrentState; };
+	FORCEINLINE ETrickyGameState GetCurrentState() const { return CurrentState; };
 
 	UFUNCTION(BlueprintGetter, Category=GameState)
-	FORCEINLINE EGameState GetLastState() const { return LastState; };
+	FORCEINLINE ETrickyGameState GetLastState() const { return LastState; };
 
 	virtual bool StartGame_Implementation() override;
 
@@ -150,7 +150,7 @@ public:
 
 	virtual bool StartTransition_Implementation() override;
 
-	virtual EGameState GetGameState_Implementation() const override;
+	virtual ETrickyGameState GetGameState_Implementation() const override;
 
 	virtual EGameResult GetGameResult_Implementation() const override;
 
@@ -242,13 +242,13 @@ private:
 	 * Current Game State.
 	 */
 	UPROPERTY(VisibleInstanceOnly, BlueprintGetter=GetCurrentState, Category=GameState)
-	EGameState CurrentState = EGameState::Inactive;
+	ETrickyGameState CurrentState = ETrickyGameState::Inactive;
 
 	/**
 	 * Last Game State. Used for unpausing the game.
 	 */
 	UPROPERTY(VisibleInstanceOnly, BlueprintGetter=GetLastState, Category=GameState)
-	EGameState LastState = EGameState::Inactive;
+	ETrickyGameState LastState = ETrickyGameState::Inactive;
 
 	/**
 	 * Current game result.
@@ -337,7 +337,7 @@ private:
 
 	void PrintLog(const FString& Message) const;
 
-	static void GetGameStateName(FString& StateName, const EGameState State);
+	static void GetGameStateName(FString& StateName, const ETrickyGameState State);
 
 	static void GetInactivityReasonName(FString& ReasonName, const EGameInactivityReason Reason);
 

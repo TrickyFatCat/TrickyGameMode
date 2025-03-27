@@ -26,7 +26,7 @@ bool ATrickyGameModeBase::SetPause(APlayerController* PC, FCanUnpause CanUnpause
 	{
 		PauseGame();
 
-		if (LastState == EGameState::Inactive && CurrentInactivityReason == EGameInactivityReason::Preparation)
+		if (LastState == ETrickyGameState::Inactive && CurrentInactivityReason == EGameInactivityReason::Preparation)
 		{
 			PausePreparationTimer();
 		}
@@ -43,7 +43,7 @@ bool ATrickyGameModeBase::ClearPause()
 	{
 		UnpauseGame();
 
-		if (CurrentState == EGameState::Inactive && CurrentInactivityReason == EGameInactivityReason::Preparation)
+		if (CurrentState == ETrickyGameState::Inactive && CurrentInactivityReason == EGameInactivityReason::Preparation)
 		{
 			UnPausePreparationTimer();
 		}
@@ -100,12 +100,12 @@ void ATrickyGameModeBase::SetInitialInactivityReason(const EGameInactivityReason
 
 bool ATrickyGameModeBase::StartGame_Implementation()
 {
-	if (CurrentState == EGameState::Active || CurrentState == EGameState::Paused)
+	if (CurrentState == ETrickyGameState::Active || CurrentState == ETrickyGameState::Paused)
 	{
 		return false;
 	}
 
-	CurrentState = EGameState::Active;
+	CurrentState = ETrickyGameState::Active;
 	Execute_ChangeInactivityReason(this, EGameInactivityReason::None);
 
 	if (bIsSessionTimeLimited)
@@ -128,12 +128,12 @@ bool ATrickyGameModeBase::StartGame_Implementation()
 
 bool ATrickyGameModeBase::FinishGame_Implementation(const EGameResult Result)
 {
-	if (CurrentState != EGameState::Active)
+	if (CurrentState != ETrickyGameState::Active)
 	{
 		return false;
 	}
 
-	CurrentState = EGameState::Finished;
+	CurrentState = ETrickyGameState::Finished;
 	GameResult = Result;
 	OnGameFinished.Broadcast(Result);
 
@@ -148,12 +148,12 @@ bool ATrickyGameModeBase::FinishGame_Implementation(const EGameResult Result)
 
 bool ATrickyGameModeBase::StopGame_Implementation(const EGameInactivityReason Reason)
 {
-	if (CurrentState != EGameState::Active)
+	if (CurrentState != ETrickyGameState::Active)
 	{
 		return false;
 	}
 
-	CurrentState = EGameState::Inactive;
+	CurrentState = ETrickyGameState::Inactive;
 	Execute_ChangeInactivityReason(this, Reason);
 	OnGameStopped.Broadcast(Reason);
 
@@ -167,7 +167,7 @@ bool ATrickyGameModeBase::StopGame_Implementation(const EGameInactivityReason Re
 
 bool ATrickyGameModeBase::StartPreparation_Implementation()
 {
-	if (CurrentState != EGameState::Inactive)
+	if (CurrentState != ETrickyGameState::Inactive)
 	{
 		return StopGame(EGameInactivityReason::Preparation);
 	}
@@ -186,7 +186,7 @@ bool ATrickyGameModeBase::StartPreparation_Implementation()
 
 bool ATrickyGameModeBase::StartCutscene_Implementation()
 {
-	if (CurrentState != EGameState::Inactive)
+	if (CurrentState != ETrickyGameState::Inactive)
 	{
 		return StopGame(EGameInactivityReason::Cutscene);
 	}
@@ -196,7 +196,7 @@ bool ATrickyGameModeBase::StartCutscene_Implementation()
 
 bool ATrickyGameModeBase::StartTransition_Implementation()
 {
-	if (CurrentState != EGameState::Inactive)
+	if (CurrentState != ETrickyGameState::Inactive)
 	{
 		return StopGame(EGameInactivityReason::Transition);
 	}
@@ -204,14 +204,14 @@ bool ATrickyGameModeBase::StartTransition_Implementation()
 	return Execute_ChangeInactivityReason(this, EGameInactivityReason::Transition);
 }
 
-EGameState ATrickyGameModeBase::GetGameState_Implementation() const
+ETrickyGameState ATrickyGameModeBase::GetGameState_Implementation() const
 {
 	return CurrentState;
 }
 
 EGameResult ATrickyGameModeBase::GetGameResult_Implementation() const
 {
-	if (CurrentState != EGameState::Finished)
+	if (CurrentState != ETrickyGameState::Finished)
 	{
 		return EGameResult::None;
 	}
@@ -221,7 +221,7 @@ EGameResult ATrickyGameModeBase::GetGameResult_Implementation() const
 
 EGameInactivityReason ATrickyGameModeBase::GetGameInactivityReason_Implementation() const
 {
-	if (CurrentState != EGameState::Inactive)
+	if (CurrentState != ETrickyGameState::Inactive)
 	{
 		return EGameInactivityReason::None;
 	}
@@ -264,13 +264,13 @@ float ATrickyGameModeBase::GetGameRemainingTime_Implementation() const
 
 bool ATrickyGameModeBase::PauseGame_Implementation()
 {
-	if (CurrentState == EGameState::Paused || CurrentState == EGameState::Finished)
+	if (CurrentState == ETrickyGameState::Paused || CurrentState == ETrickyGameState::Finished)
 	{
 		return false;
 	}
 
 	LastState = CurrentState;
-	CurrentState = EGameState::Paused;
+	CurrentState = ETrickyGameState::Paused;
 	OnGamePaused.Broadcast();
 
 #if WITH_EDITOR || !UE_BUILD_SHIPPING
@@ -282,7 +282,7 @@ bool ATrickyGameModeBase::PauseGame_Implementation()
 
 bool ATrickyGameModeBase::UnpauseGame_Implementation()
 {
-	if (CurrentState != EGameState::Paused)
+	if (CurrentState != ETrickyGameState::Paused)
 	{
 		return false;
 	}
@@ -562,9 +562,9 @@ void ATrickyGameModeBase::PrintLog(const FString& Message) const
 	UE_LOG(LogTrickyGameMode, Display, TEXT("%s"), *Message);
 }
 
-void ATrickyGameModeBase::GetGameStateName(FString& StateName, const EGameState State)
+void ATrickyGameModeBase::GetGameStateName(FString& StateName, const ETrickyGameState State)
 {
-	StateName = StaticEnum<EGameState>()->GetNameStringByValue(static_cast<int64>(State));
+	StateName = StaticEnum<ETrickyGameState>()->GetNameStringByValue(static_cast<int64>(State));
 }
 
 void ATrickyGameModeBase::GetInactivityReasonName(FString& ReasonName, const EGameInactivityReason Reason)

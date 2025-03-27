@@ -6,7 +6,7 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "TrickyGameModeLibrary.generated.h"
 
-enum class EGameState : uint8;
+enum class ETrickyGameState : uint8;
 enum class EGameResult : uint8;
 enum class EGameInactivityReason : uint8;
 class ATrickyGameModeBase;
@@ -44,7 +44,7 @@ public:
 	static bool StartTransition(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintPure, Category=TrickyGameMode, meta=(WorldContext="WorldContextObject"))
-	static EGameState GetGameState(const UObject* WorldContextObject);
+	static ETrickyGameState GetGameState(const UObject* WorldContextObject);
 
 	UFUNCTION(BlueprintPure, Category=TrickyGameMode, meta=(WorldContext="WorldContextObject"))
 	static EGameResult GetGameResult(const UObject* WorldContextObject);

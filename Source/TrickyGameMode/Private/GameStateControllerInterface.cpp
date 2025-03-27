@@ -48,9 +48,9 @@ bool IGameStateControllerInterface::StartTransition_Implementation()
 	return false;
 }
 
-EGameState IGameStateControllerInterface::GetGameState_Implementation() const
+ETrickyGameState IGameStateControllerInterface::GetGameState_Implementation() const
 {
-	return EGameState::Inactive;
+	return ETrickyGameState::Inactive;
 }
 
 EGameResult IGameStateControllerInterface::GetGameResult_Implementation() const

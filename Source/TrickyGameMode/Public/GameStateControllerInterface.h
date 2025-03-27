@@ -12,7 +12,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogTrickyGameMode, Log, All)
  * Represents the various states of the game during its lifecycle.
  */
 UENUM(BlueprintType)
-enum class EGameState : uint8
+enum class ETrickyGameState : uint8
 {
 	Inactive,
 	Active,
@@ -172,9 +172,9 @@ public:
 	 * @return The current game state.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
-	EGameState GetGameState() const;
+	ETrickyGameState GetGameState() const;
 
-	virtual EGameState GetGameState_Implementation() const;
+	virtual ETrickyGameState GetGameState_Implementation() const;
 
 	/**
 	 * Returns the current result of the game.
