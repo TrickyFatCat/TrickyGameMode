@@ -75,7 +75,7 @@ public:
 	/**
 	 * Initiates the start of the game, transitioning it into an active state.
 	 *
-	 * @retur True if the game was successfully started.
+	 * @return True if the game was successfully started.
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	bool StartGame();
