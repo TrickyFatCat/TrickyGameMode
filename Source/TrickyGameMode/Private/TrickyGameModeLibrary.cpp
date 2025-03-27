@@ -5,6 +5,8 @@
 
 #include "TrickyGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "Engine/World.h"
+#include "TimerManager.h"
 
 ATrickyGameModeBase* UTrickyGameModeLibrary::GetTrickyGameMode(const UObject* WorldContextObject)
 {
