@@ -32,6 +32,12 @@ public:
 	virtual bool ClearPause() override;
 
 	/**
+	 * Triggered when the game state successfully changed.
+	 */
+	UPROPERTY(BlueprintAssignable)
+	FOnGameStateChangedDynamicSignature OnGameStateChanged;
+
+	/**
 	 * Triggered when the game successfully started.
 	 */
 	UPROPERTY(BlueprintAssignable)
@@ -42,18 +48,6 @@ public:
 	 */
 	UPROPERTY(BlueprintAssignable)
 	FOnGameFinishedDynamicSignature OnGameFinished;
-
-	/**
-	 * Triggered when the game successfully paused.
-	 */
-	UPROPERTY(BlueprintAssignable)
-	FOnGamePausedDynamicSignature OnGamePaused;
-
-	/**
-	 * Triggered when the game successfully unpaused.
-	 */
-	UPROPERTY(BlueprintAssignable)
-	FOnGameUnpausedDynamicSignature OnGameUnpaused;
 
 	/**
 	 * Triggered when the game successfully stopped.
@@ -256,9 +250,6 @@ private:
 	UPROPERTY(VisibleInstanceOnly, Category=GameState)
 	EGameResult GameResult = EGameResult::None;
 
-	virtual bool PauseGame_Implementation() override;
-
-	virtual bool UnpauseGame_Implementation() override;
 
 	virtual bool ChangeInactivityReason_Implementation(const EGameInactivityReason NewInactivityReason) override;
 
@@ -331,6 +322,9 @@ private:
 
 	UFUNCTION()
 	void HandleGameTimerFinished();
+
+	UFUNCTION()
+	bool ChangeGameState(const ETrickyGameState NewState);
 
 #if WITH_EDITOR || !UE_BUILD_SHIPPING
 	void PrintWarning(const FString& Message) const;

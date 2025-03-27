@@ -16,8 +16,7 @@ enum class ETrickyGameState : uint8
 {
 	Inactive,
 	Active,
-	Finished,
-	Paused
+	Finished
 };
 
 /**
@@ -40,19 +39,18 @@ UENUM(BlueprintType)
 enum class EGameInactivityReason : uint8
 {
 	None,
+	Paused,
 	Preparation,
 	Cutscene,
 	Transition,
 	Custom
 };
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameStateChangedDynamicSignature, const ETrickyGameState, NewState);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameStartedDynamicSignature);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameFinishedDynamicSignature, const EGameResult, Result);
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGamePausedDynamicSignature);
-
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnGameUnpausedDynamicSignature);
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnGameStoppedDynamicSignature, const EGameInactivityReason, Reason);
 
@@ -105,26 +103,6 @@ public:
 	bool StopGame(const EGameInactivityReason Reason);
 
 	virtual bool StopGame_Implementation(const EGameInactivityReason Reason);
-
-	/**
-	 * Pauses the ongoing game and transitions it into a paused state.
-	 *
-	 * @return True if the game was successfully paused.
-	 */
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
-	bool PauseGame();
-
-	virtual bool PauseGame_Implementation();
-
-	/**
-	 * Resumes a previously paused game, transitioning it back into an active state.
-	 *
-	 * @return True if the game was successfully unpaused.
-	 */
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
-	bool UnpauseGame();
-
-	virtual bool UnpauseGame_Implementation();
 
 	/**
 	 * Updates the current inactivity reason for the game.
@@ -194,7 +172,7 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category = GameState)
 	EGameInactivityReason GetGameInactivityReason() const;
-	
+
 	virtual EGameInactivityReason GetGameInactivityReason_Implementation() const;
 
 	/**

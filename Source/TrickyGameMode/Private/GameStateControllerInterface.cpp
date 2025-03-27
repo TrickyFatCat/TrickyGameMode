@@ -18,16 +18,6 @@ bool IGameStateControllerInterface::StopGame_Implementation(const EGameInactivit
 	return false;
 }
 
-bool IGameStateControllerInterface::PauseGame_Implementation()
-{
-	return false;
-}
-
-bool IGameStateControllerInterface::UnpauseGame_Implementation()
-{
-	return false;
-}
-
 bool IGameStateControllerInterface::ChangeInactivityReason_Implementation(const EGameInactivityReason NewInactivityReason)
 {
 	return false;
