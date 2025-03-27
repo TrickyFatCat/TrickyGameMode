@@ -164,5 +164,5 @@ bool UTrickyGameModeLibrary::ImplementsGameStateInterface(const UObject* WorldCo
 {
 	const AGameModeBase* GameMode = UGameplayStatics::GetGameMode(WorldContextObject);
 
-	return GameMode->Implements<IGameStateControllerInterface>();
+	return GameMode->Implements<UGameStateControllerInterface>();
 }
